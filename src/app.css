@@ -7,6 +7,7 @@
   --cyan-mid: 0, 232, 255; /* #00e8ff */
   --magenta-mid: 255, 0, 117; /* #ff0075 */
   --black-dark: 1, 1, 1;
+  --blue-dark: 15, 23, 42;
   --green-transparent: 45, 212, 191, 0.2;
   --green: 94, 234, 212;
 
@@ -31,19 +32,17 @@
 }
 
 body {
-  height: 100%;
-  min-height: 100vh;
   margin: 0;
   padding: 0;
   font-family: Poppins;
   color: var(--text-color);
-  background: linear-gradient(180deg,#010101 0%,#012a50 100%);
+  background: rgb(var(--blue-dark));
 }
 
 a {
   text-decoration: none;
   margin: 0;
-  color: var(--unvisited-link-color);
+  color: rgb(var(--green));
 }
 a:hover,
 a:focus {
