@@ -26,13 +26,13 @@ export interface AllUsersResponse {
   per_page: number;
   total: number;
   total_pages: number;
-  data: [
-    {
-      id: number;
-      first_name: string;
-      last_name: string;
-      email: string;
-      display_picture: string;
-    }
-  ];
+  data: User[];
+}
+
+export interface CreateUserResponse {
+  id: number;
+  first_name: string;
+  last_name: string;
+  email: string;
+  display_picture: string;
 }

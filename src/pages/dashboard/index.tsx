@@ -3,9 +3,12 @@ import { PageLayout } from "../../components/Page";
 import { Panel } from "../../components/Panel";
 import { LargeTitle } from "../../components/Typography";
 import { fetchAllUsers } from "../../backend";
+import { AllUsersResponse } from "../../types";
 
 export default function Dashboard() {
   const [token, setToken] = useState<string>();
+  const [users, setUsers] = useState<AllUsersResponse>();
+  const [page, setPage] = useState<number>();
 
   useEffect(() => {
     if (window !== undefined) {
@@ -18,11 +21,12 @@ export default function Dashboard() {
     if (Boolean(token)) {
       const fetchAllUsersPromise = async () => {
         const allUsers = await fetchAllUsers(token);
+        setUsers(allUsers);
         console.log({ allUsers });
       };
       fetchAllUsersPromise();
     }
-  }, [token]);
+  }, [token, page]);
 
   return (
     <PageLayout>
@@ -30,10 +34,18 @@ export default function Dashboard() {
       <Panel
         css={`
           min-width: 300px;
+          display: flex;
+          flex-direction: column;
         `}
       >
-        Welcome to the dashboard, you did it {token}
-        {/* //TODO list of users*/}
+        <ul>
+          {users?.data?.map((user) => (
+            <li>
+              {user.first_name}, {user.email}
+              <img src={user.display_picture} />
+            </li>
+          ))}
+        </ul>
       </Panel>
     </PageLayout>
   );

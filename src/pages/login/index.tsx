@@ -10,6 +10,7 @@ import { login } from "../../backend";
 import { Flex } from "../../components/Flex";
 import { Input } from "../../components/Input";
 import { useRouter } from "next/router";
+import { Token } from "../../types";
 
 export default function Login() {
   type Inputs = {
@@ -30,7 +31,7 @@ export default function Login() {
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     console.log(data);
-    const response = await login({
+    const response: Token = await login({
       email: data.email,
       password: data.password,
     });
@@ -38,8 +39,7 @@ export default function Login() {
     // if (response === 200) {
     // if the response is ok
     if (response) {
-      //@ts-ignore
-      localStorage.setItem("token", JSON.stringify(response.token as string));
+      localStorage.setItem("token", response.token);
       router.push("/dashboard");
     }
     // }
