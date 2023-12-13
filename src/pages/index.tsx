@@ -3,13 +3,18 @@ import { Body, Footnote, HeaderTitle, Headline, Subhead, Title2 } from "../compo
 import { PageLayout } from "../components/Page";
 import css, { styled } from "styled-components";
 import { Flex } from "../components/Flex";
+import { Button } from "../components/Button";
+import { login, registerUser } from "../backend";
 
 export default function Home() {
-  // first_name: "Simon",
-  // last_name: "Atkins",
-  // email: "test@simon.com",
-  // password: "hello",
-  // password_confirmation: "hello",
+  const formData = {
+    first_name: "Simon",
+    last_name: "Atkins",
+    email: "test@simon.com",
+    password: "hello",
+    password_confirmation: "hello",
+  };
+  //status code 409 => user already exists, please log in
 
   return (
     <>
@@ -21,7 +26,9 @@ export default function Home() {
       <main>
         <PageLayout>
           <Content align={"flex-start"} gap={"var(--spacing-md)"}>
-            <p> Hello, please log in.</p>
+            <p>Register New User</p>
+            <Button onClick={() => registerUser(formData)}>Register</Button>
+            <Button onClick={login}>Login</Button>
           </Content>
         </PageLayout>
       </main>
