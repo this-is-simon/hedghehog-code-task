@@ -30,12 +30,10 @@ export default function Login() {
   const router = useRouter();
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    console.log(data);
     const response = await login({
       email: data.email,
       password: data.password,
     });
-    console.log({ response });
     if (response.token) {
       localStorage.setItem("token", response.token);
       router.push("/dashboard");

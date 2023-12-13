@@ -44,16 +44,17 @@ export const login = (data: UserCredentials): Promise<Token> => {
 export const fetchAllUsers = (
   token: string,
   queryParams?: {
-    per_page: number; // default 10
-    page: number;
+    per_page?: number; // default 10
+    page?: number;
   }
 ): Promise<AllUsersResponse> => {
   const headers = new Headers({
     Authorization: `Bearer ${token}`,
     "Content-Type": "application/json",
   });
-  console.log("headers!", headers);
-  return fetch("http://localhost:3002/api/users", {
+  let url = `http://localhost:3002/api/users?page=${queryParams?.page}`;
+  console.log("url", url);
+  return fetch(url, {
     method: "GET",
     headers,
   })
