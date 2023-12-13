@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { Body, Footnote, HeaderTitle, Headline, Subhead, Title2 } from "../components/Typography";
+import { Body, Footnote, HeaderTitle, Headline, Title2 } from "../components/Typography";
 import { PageLayout } from "../components/Page";
 import css, { styled } from "styled-components";
 import { Flex } from "../components/Flex";
@@ -8,16 +8,20 @@ import { login, registerUser } from "../backend";
 import { Panel } from "../components/Panel";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Input } from "../components/Input";
+import { useRouter } from "next/router";
+import Link from "next/link";
 
 export default function Home() {
-  const newuserdata = {
-    first_name: "Simon",
-    last_name: "Atkins",
-    email: "test@simon.com",
-    password: "hello",
-    password_confirmation: "hello",
-  };
+  // const newuserdata = {
+  //   first_name: "Simon",
+  //   last_name: "Atkins",
+  //   email: "test@simon.com",
+  //   password: "hello",
+  //   password_confirmation: "hello",
+  // };
   //status code 409 => user already exists, please log in
+
+  const router = useRouter();
 
   const existingUserData = {
     email: "test@simon.com",
@@ -53,12 +57,12 @@ export default function Home() {
     const emailRegex = /^[\w-]+(?:\.[\w-]+)*@(?:[\w-]+\.)+[a-zA-Z]{2,7}$/;
     //TODO this doesn't quite work
     //See if you can just return the response from the back end as the error
-    if (emailRegex.test(data.email)) {
-      setError("email", {
-        type: "manual",
-        message: "Valid email required",
-      });
-    }
+    // if (emailRegex.test(data.email)) {
+    //   setError("email", {
+    //     type: "manual",
+    //     message: "Valid email required",
+    //   });
+    // }
 
     const response = await registerUser({
       first_name: data.firstName,
@@ -69,6 +73,11 @@ export default function Home() {
     });
     console.log({ response });
     // if (response === 200) {
+    // if the response is ok
+    //@ts-ignore
+    if (response.id) {
+      router.push("/login");
+    }
     // }
     //TODO
   };
@@ -144,7 +153,9 @@ export default function Home() {
                   <Button>Register</Button>
                   <Button onClick={() => login(existingUserData)}>Login</Button>
                   <Button type={"submit"}>Test User</Button>
-                  <Subhead>Already registered? Please log in</Subhead>
+                  <Footnote>
+                    Already registered? Please <Link href="/login">log in</Link>
+                  </Footnote>
                 </Flex>
               </form>
             </Panel>
@@ -157,7 +168,7 @@ export default function Home() {
 
 // const Input = styled.input``;
 
-const Content = styled.div`
+export const Content = styled.div`
   display: flex;
   flex-direction: column;
   min-width: 300px;

@@ -92,16 +92,16 @@ export const Callout = styled(BaseStyles)`
   ${fontWeightRegular};
 `;
 
-export const Subhead = styled(BaseStyles)<{ bold?: boolean }>`
-  color: var(--secondary-text-color);
-  font-size: 13px;
-  line-height: 19px;
-  ${(p) => (p.bold ? fontWeightSemiBold : fontWeightRegular)}
-`;
+// export const Subhead = styled(BaseStyles)<{ bold?: boolean }>`
+//   color: var(--secondary-text-color);
+//   font-size: 14px;
+//   line-height: 19px;
+//   ${(p) => (p.bold ? fontWeightSemiBold : fontWeightRegular)}
+// `;
 
 export const Footnote = styled(BaseStyles)`
   color: var(--secondary-text-color);
-  font-size: 11px;
+  font-size: 13px;
   line-height: 16px;
   ${fontWeightRegular}
 `;
