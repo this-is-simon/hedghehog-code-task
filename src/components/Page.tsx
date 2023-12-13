@@ -20,7 +20,7 @@ const PageContainer = styled.div`
   padding: var(--spacing-xxl) var(--spacing-xl);
   ${smallScreenAndBelow(
     css`
-      padding: var(--spacing-xl) var(--spacing-sm);
+      padding: var(--spacing-xl) var(--spacing-xxs);
     `
   )};
 `;
