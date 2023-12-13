@@ -7,7 +7,7 @@ import { Button } from "../components/Button";
 import { login, registerUser } from "../backend";
 
 export default function Home() {
-  const formData = {
+  const newuserdata = {
     first_name: "Simon",
     last_name: "Atkins",
     email: "test@simon.com",
@@ -15,6 +15,11 @@ export default function Home() {
     password_confirmation: "hello",
   };
   //status code 409 => user already exists, please log in
+
+  const existingUserData = {
+    email: "test@simon.com",
+    password: "hello",
+  };
 
   return (
     <>
@@ -27,8 +32,8 @@ export default function Home() {
         <PageLayout>
           <Content align={"flex-start"} gap={"var(--spacing-md)"}>
             <p>Register New User</p>
-            <Button onClick={() => registerUser(formData)}>Register</Button>
-            <Button onClick={login}>Login</Button>
+            <Button onClick={() => registerUser(newuserdata)}>Register</Button>
+            <Button onClick={() => login(existingUserData)}>Login</Button>
           </Content>
         </PageLayout>
       </main>
