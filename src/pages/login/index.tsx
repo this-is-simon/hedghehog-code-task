@@ -37,8 +37,9 @@ export default function Login() {
     console.log({ response });
     // if (response === 200) {
     // if the response is ok
-    //@ts-ignore
     if (response) {
+      //@ts-ignore
+      localStorage.setItem("token", JSON.stringify(response.token as string));
       router.push("/dashboard");
     }
     // }

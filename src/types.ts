@@ -19,4 +19,5 @@ export interface User {
   display_picture: string;
 }
 
-export type Token = string;
+// export type Token = string;
+export type Token = { token: string };
