@@ -20,6 +20,8 @@
   --skill-pill-color: rgba(var(--green-transparent));
   --skill-text-color: rgba(var(--green));
   --button-bg-default: rgb(var(--white-light));
+  --error-color: rgb(var(--magenta-mid));
+
 
   /* spacing */
   --spacing-unit: 16px;

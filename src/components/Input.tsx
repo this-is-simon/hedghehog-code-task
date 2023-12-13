@@ -10,21 +10,29 @@ interface Props {
   name?: string;
   register?: any;
   required?: boolean;
+  error?: string;
+  type?: string;
 }
 
-export const Input = forwardRef<HTMLInputElement, Props>(({ label, name, register, required }) => {
-  return (
-    <Flex
-      direction="column"
-      css={`
-        width: 100%;
-      `}
-    >
-      <StyledLabel role="label">{label}</StyledLabel>
-      <StyledInput {...register(name, { required })} />
-    </Flex>
-  );
-});
+export const Input = forwardRef<HTMLInputElement, Props>(
+  ({ label, name, register, required, error, type }) => {
+    return (
+      <Flex
+        direction="column"
+        css={`
+          width: 100%;
+        `}
+      >
+        <StyledLabel role="label">
+          {label}
+          {required && "*"}
+        </StyledLabel>
+        <StyledInput type={type} {...register(name, { required: `${label} is required` })} />
+        {error && <Error role="warning">{error}</Error>}
+      </Flex>
+    );
+  }
+);
 
 const StyledInput = styled.input`
   padding: var(--spacing-sm);
@@ -38,4 +46,11 @@ const StyledLabel = styled(Footnote)`
   display: flex;
   align-self: flex-start;
   margin-bottom: var(--spacing-xxs);
+`;
+
+const Error = styled(Footnote)`
+  width: 100%;
+  text-align: left;
+  color: var(--error-color);
+  margin-top: var(--spacing-xxs);
 `;

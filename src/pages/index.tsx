@@ -37,10 +37,43 @@ export default function Home() {
     handleSubmit,
     watch,
     formState: { errors },
+    setError,
+    getValues,
   } = useForm<Inputs>();
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    console.log(data);
+    if (data.password !== data.passwordConfirmation) {
+      setError("passwordConfirmation", {
+        type: "manual",
+        message: "Passwords must match",
+      });
+      console.log("passwords don't match");
+    }
+    const emailRegex = /^[\w-]+(?:\.[\w-]+)*@(?:[\w-]+\.)+[a-zA-Z]{2,7}$/;
+    //TODO this doesn't quite work
+    //See if you can just return the response from the back end as the error
+    if (emailRegex.test(data.email)) {
+      setError("email", {
+        type: "manual",
+        message: "Valid email required",
+      });
+    }
 
+    const response = await registerUser({
+      first_name: data.firstName,
+      last_name: data.lastName,
+      email: data.email,
+      password: data.password,
+      password_confirmation: data.passwordConfirmation,
+    });
+    console.log({ response });
+    // if (response === 200) {
+    // }
+    //TODO
+  };
+
+  console.log({ errors });
   return (
     <>
       <Head>
@@ -64,40 +97,52 @@ export default function Home() {
                   gap={"var(--spacing-md)"}
                   flex={1}
                 >
-                  <p>Register New User</p>
+                  <h1>Register New User</h1>
                   <Input
-                    label={"First Name*"}
+                    label={"First Name"}
                     aria-label={"First Name"}
                     name={"firstName"}
                     register={register}
+                    error={errors?.firstName?.message}
                     required
-                  ></Input>
+                  />
                   <Input
-                    label={"Last Name*"}
+                    label={"Last Name"}
+                    aria-label={"Last Name"}
                     name={"lastName"}
                     register={register}
-                    aria-label={"Last Name"}
-                  ></Input>
+                    error={errors?.lastName?.message}
+                    required
+                  />
                   <Input
-                    label={"Email*"}
+                    label={"Email"}
                     aria-label={"Email"}
                     name="email"
                     register={register}
-                  ></Input>
+                    error={errors?.email?.message}
+                    type={"email"}
+                    required
+                  />
                   <Input
-                    label={"Password*"}
+                    label={"Password"}
                     aria-label={"Password"}
                     name={"password"}
                     register={register}
-                  ></Input>
+                    error={errors?.password?.message}
+                    type={"password"}
+                    required
+                  />
                   <Input
                     label={"Password Confirmation"}
                     aria-label={"Password Confirmation"}
                     name={"passwordConfirmation"}
                     register={register}
-                  ></Input>
-                  <Button onClick={() => registerUser(newuserdata)}>Register</Button>
-                  {/* <Button onClick={() => login(existingUserData)}>Login</Button> */}
+                    error={errors?.passwordConfirmation?.message}
+                    type={"password"}
+                    required
+                  />
+                  <Button>Register</Button>
+                  <Button onClick={() => login(existingUserData)}>Login</Button>
                   <Button type={"submit"}>Test User</Button>
                   <Subhead>Already registered? Please log in</Subhead>
                 </Flex>
