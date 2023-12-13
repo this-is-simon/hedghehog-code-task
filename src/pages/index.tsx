@@ -5,6 +5,8 @@ import css, { styled } from "styled-components";
 import { Flex } from "../components/Flex";
 import { Button } from "../components/Button";
 import { login, registerUser } from "../backend";
+import { Panel } from "../components/Panel";
+import { Input } from "../components/Input";
 
 export default function Home() {
   const newuserdata = {
@@ -27,13 +29,29 @@ export default function Home() {
         <title>Hedghehog Portal</title>
         <meta name="description" content="A window to the soul" />
       </Head>
-
       <main>
         <PageLayout>
-          <Content align={"flex-start"} gap={"var(--spacing-md)"}>
-            <p>Register New User</p>
-            <Button onClick={() => registerUser(newuserdata)}>Register</Button>
-            <Button onClick={() => login(existingUserData)}>Login</Button>
+          <Content direction={"column"}>
+            <Panel>
+              <Flex
+                direction={"column"}
+                align={"center"}
+                justify={"center"}
+                gap={"var(--spacing-md)"}
+                css={`
+                  width: 500px;
+                `}
+              >
+                <p>Register New User</p>
+                <Input aria-label={"First Name"}></Input>
+                <Input aria-label={"Second Name"}></Input>
+                <Input aria-label={"Email"}></Input>
+                <Input aria-label={"Password"}></Input>
+                <Input aria-label={"Password Confirmation"}></Input>
+                <Button onClick={() => registerUser(newuserdata)}>Register</Button>
+                <Button onClick={() => login(existingUserData)}>Login</Button>
+              </Flex>
+            </Panel>
           </Content>
         </PageLayout>
       </main>
@@ -42,9 +60,7 @@ export default function Home() {
 }
 
 const Content = styled(Flex)`
-  @media (max-width: 768px) {
-    flex-direction: column;
-  }
+  flex-direction: column;
 `;
 
 const StyledIcon = styled.a`

@@ -16,8 +16,10 @@
   --secondary-text-color: rgb(var(--white-mid));
   --unvisited-link-color: rgb(var(--cyan-mid));
   --focus-link-color: rgb(var(--cyan-mid));
+  --panel-bg-color: rgba(var(--white-light), 0.05);
   --skill-pill-color: rgba(var(--green-transparent));
   --skill-text-color: rgba(var(--green));
+  --button-bg-default: rgb(var(--white-light));
 
   /* spacing */
   --spacing-unit: 16px;
