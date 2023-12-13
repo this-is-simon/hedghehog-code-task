@@ -19,5 +19,20 @@ export interface User {
   display_picture: string;
 }
 
-// export type Token = string;
 export type Token = { token: string };
+
+export interface AllUsersResponse {
+  page: number;
+  per_page: number;
+  total: number;
+  total_pages: number;
+  data: [
+    {
+      id: number;
+      first_name: string;
+      last_name: string;
+      email: string;
+      display_picture: string;
+    }
+  ];
+}
