@@ -16,9 +16,6 @@ export const registerUser = (data: NewUser): Promise<User | Error> => {
     body: JSON.stringify(data),
   })
     .then((response) => {
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
       return response.json();
     })
     .catch((error) => {
@@ -36,9 +33,6 @@ export const login = (data: UserCredentials): Promise<Token> => {
     body: JSON.stringify(data),
   })
     .then((response) => {
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
       return response.json();
     })
     .catch((error) => {
@@ -64,9 +58,6 @@ export const fetchAllUsers = (
     headers,
   })
     .then((response) => {
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
       return response.json();
     })
     .catch((error) => {
@@ -94,9 +85,6 @@ export const createUser = (
     body: JSON.stringify(newUser),
   })
     .then((response) => {
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
       return response.json();
     })
     .catch((error) => {
@@ -115,9 +103,6 @@ export const deleteUser = (token: string, id: number): Promise<void | Error> => 
     headers,
   })
     .then((response) => {
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
       return response.json();
     })
     .catch((error) => {
