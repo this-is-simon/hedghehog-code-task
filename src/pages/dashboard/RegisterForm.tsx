@@ -4,8 +4,10 @@ import styled from "styled-components";
 import { Flex } from "../../components/Flex";
 import { Input } from "../../components/Input";
 import { Button } from "../../components/Button";
-import { createUser } from "../../backend";
-import { CreateUserResponse } from "../../types";
+import { addNewUser } from "../../backend";
+import { CreateUserResponse, User } from "../../types";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 interface FormInput {
   first_name: string;
@@ -15,8 +17,7 @@ interface FormInput {
 
 interface Props {
   onClose: () => void;
-  appendUser: (newUser: any) => void;
-  //TODO fix the type here ^
+  appendUser: (newUser: User) => void;
 }
 
 const RegisterForm = ({ onClose, appendUser }: Props) => {
@@ -27,19 +28,18 @@ const RegisterForm = ({ onClose, appendUser }: Props) => {
   } = useForm<FormInput>();
 
   const onSubmit: SubmitHandler<FormInput> = async (data) => {
-    const response = await createUser({
+    const response = await addNewUser({
       first_name: data.first_name,
       last_name: data.last_name,
       email: data.email,
     });
     if (response.ok) {
-      //TODO add success toast
       appendUser(await response.json());
+      toast("User added to last page");
       onClose();
     } else {
-      // failure toast
+      toast.error("User not added");
     }
-    console.log(data);
   };
 
   return (
@@ -95,6 +95,7 @@ const RegisterForm = ({ onClose, appendUser }: Props) => {
         >
           Add User
         </Button>
+        <ToastContainer theme={"dark"} />
       </Flex>
     </form>
   );

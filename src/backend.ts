@@ -7,7 +7,16 @@ import {
   CreateUserResponse,
 } from "./types";
 
-export const registerUser = (data: NewUser): Promise<Response> => {
+interface RegisterUserError {
+  statusCode?: number;
+  data?: {
+    message?: string;
+  };
+}
+//TODO remove?
+
+export const registerUser = (data: NewUser): Promise<any> => {
+  //TODO fix type ^
   return fetch("http://localhost:3002/api/register", {
     method: "POST",
     headers: {
@@ -66,7 +75,7 @@ export const fetchAllUsers = (queryParams?: QueryParams): Promise<AllUsersRespon
     });
 };
 
-export const createUser = (newUser: {
+export const addNewUser = (newUser: {
   first_name: string;
   last_name: string;
   email: string;

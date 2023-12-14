@@ -12,6 +12,8 @@ import { FaTrash } from "react-icons/fa";
 import React from "react";
 import Modal from "../../components/Modal";
 import RegisterForm from "./RegisterForm";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Dashboard() {
   const [users, setUsers] = useState<AllUsersResponse>();
@@ -29,16 +31,14 @@ export default function Dashboard() {
   const handleDelete = async (id: number) => {
     const response = await deleteUser(id);
     if (response.ok) {
-      //TODO success toast
+      toast("User deleted");
       let filteredUsers: User[] = users?.data?.filter((user) => user?.id !== id);
       setUsers({ ...users, data: filteredUsers });
-      console.log("response ok!");
     } else {
-      // TODO fail toast
+      toast.error("User not deleted");
     }
   };
 
-  console.log(users?.page);
   return (
     <PageLayout>
       <Heading gap={"var(--spacing-md)"} justify={"space-between"}>
@@ -92,6 +92,7 @@ export default function Dashboard() {
           }}
         />
       </Modal>
+      <ToastContainer theme={"dark"} />
     </PageLayout>
   );
 }

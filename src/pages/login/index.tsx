@@ -11,6 +11,8 @@ import { Input } from "../../components/Input";
 import { useRouter } from "next/router";
 import { Token } from "../../types";
 import { validateEmail } from "../../utils";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Login() {
   type Inputs = {
@@ -38,18 +40,13 @@ export default function Login() {
         email: data.email,
         password: data.password,
       });
-
-      console.log(response);
       if (response.statusCode === 422) {
-        console.log("422 :)");
-        //toast
-        // invalid credentials
+        toast.error(response.data?.message);
+      } else {
+        localStorage.setItem("token", response.token);
+        router.push("/dashboard");
       }
     }
-    // if (response.token) {
-    //   localStorage.setItem("token", response.token);
-    //   router.push("/dashboard");
-    // }
   };
 
   return (
@@ -102,6 +99,7 @@ export default function Login() {
           </form>
         </Panel>
       </Content>
+      <ToastContainer theme={"colored"} />
     </PageLayout>
   );
 }

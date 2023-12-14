@@ -18,17 +18,10 @@ import { Input } from "../components/Input";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { validateEmail } from "../utils";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Home() {
-  // const newuserdata = {
-  //   first_name: "Simon",
-  //   last_name: "Atkins",
-  //   email: "test@simon.com",
-  //   password: "hello",
-  //   password_confirmation: "hello",
-  // };
-  //status code 409 => user already exists, please log in
-
   const router = useRouter();
 
   const existingUserData = {
@@ -47,26 +40,21 @@ export default function Home() {
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
     setError,
-    getValues,
   } = useForm<Inputs>();
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    console.log({ data });
     if (data.password !== data.passwordConfirmation) {
       setError("passwordConfirmation", {
         type: "manual",
         message: "Passwords must match",
       });
-      return false;
     } else if (!validateEmail(data?.email)) {
       setError("email", {
         type: "manual",
         message: "Must be a valid email address",
       });
-      return false;
     } else {
       const response = await registerUser({
         first_name: data.firstName,
@@ -75,15 +63,15 @@ export default function Home() {
         password: data.password,
         password_confirmation: data.passwordConfirmation,
       });
-      console.log(response);
       if (response.ok) {
         router.push("/login");
-      } else if (response.status === 409) {
-        // User already exists. Please log in.
-        // can use response.data.message I think
+        toast("User successfully created");
+      } else if (response.statusCode === 409) {
+        toast.error("User already exists for the email provided");
+      } else {
+        toast.error("Unable to register. Please check details and try again");
       }
     }
-    //TODO handle "User already exists for the email provided"
   };
 
   console.log({ errors });
