@@ -7,6 +7,7 @@ import { addNewUser } from "../../backend";
 import { User } from "../../types";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { validateEmail } from "../../utils";
 
 interface FormInput {
   first_name: string;
@@ -24,20 +25,29 @@ const RegisterForm = ({ onClose, appendUser }: Props) => {
     register,
     handleSubmit,
     formState: { errors, isValid },
+    setError,
   } = useForm<FormInput>();
 
   const onSubmit: SubmitHandler<FormInput> = async (data) => {
-    const response = await addNewUser({
-      first_name: data.first_name,
-      last_name: data.last_name,
-      email: data.email,
-    });
-    if (response.ok) {
-      appendUser(await response.json());
-      toast("User added to last page");
-      onClose();
+    if (!validateEmail(data?.email)) {
+      setError("email", {
+        type: "manual",
+        message: "Must be a valid email address",
+      });
     } else {
-      toast.error("User not added");
+      const response = await addNewUser({
+        first_name: data.first_name,
+        last_name: data.last_name,
+        email: data.email,
+      });
+      if (response.ok) {
+        const newUser = await response.json();
+        appendUser(newUser);
+        toast("User added to final page");
+        onClose();
+      } else {
+        toast.error("User not added");
+      }
     }
   };
 
