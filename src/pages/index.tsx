@@ -17,6 +17,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { Input } from "../components/Input";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import { validateEmail } from "../utils";
 
 export default function Home() {
   // const newuserdata = {
@@ -53,29 +54,36 @@ export default function Home() {
   } = useForm<Inputs>();
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    console.log({ data });
     if (data.password !== data.passwordConfirmation) {
       setError("passwordConfirmation", {
         type: "manual",
         message: "Passwords must match",
       });
+      return false;
+    } else if (!validateEmail(data?.email)) {
+      setError("email", {
+        type: "manual",
+        message: "Must be a valid email address",
+      });
+      return false;
+    } else {
+      const response = await registerUser({
+        first_name: data.firstName,
+        last_name: data.lastName,
+        email: data.email,
+        password: data.password,
+        password_confirmation: data.passwordConfirmation,
+      });
+      console.log(response);
+      if (response.ok) {
+        router.push("/login");
+      } else if (response.status === 409) {
+        // User already exists. Please log in.
+        // can use response.data.message I think
+      }
     }
-
-    const response = await registerUser({
-      first_name: data.firstName,
-      last_name: data.lastName,
-      email: data.email,
-      password: data.password,
-      password_confirmation: data.passwordConfirmation,
-    });
-
-    // if (response === 200) {
-    // if the response is ok
-    //@ts-ignore
-    if (response.ok) {
-      router.push("/login");
-    }
-    // }
-    //TODO
+    //TODO handle "User already exists for the email provided"
   };
 
   console.log({ errors });

@@ -7,7 +7,7 @@ import {
   CreateUserResponse,
 } from "./types";
 
-export const registerUser = (data: NewUser): Promise<User | Error> => {
+export const registerUser = (data: NewUser): Promise<Response> => {
   return fetch("http://localhost:3002/api/register", {
     method: "POST",
     headers: {
@@ -15,7 +15,7 @@ export const registerUser = (data: NewUser): Promise<User | Error> => {
     },
     body: JSON.stringify(data),
   })
-    .then((response) => response.json())
+    .then((response) => response)
     .catch((error) => {
       console.error("Error:", error);
       return error;
