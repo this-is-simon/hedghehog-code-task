@@ -19,17 +19,20 @@ export default function Dashboard() {
   const [isOpen, setIsOpen] = useState<boolean>();
 
   useEffect(() => {
-    const allUsersPromise = async () => {
+    const fetchUsers = async () => {
       const allUsers = await fetchAllUsers({ page });
       setUsers(allUsers);
     };
-    allUsersPromise();
+    fetchUsers();
   }, [page]);
 
   const handleDelete = async (id) => {
     const response = await deleteUser(id);
     if (response.ok) {
+      //TODO success toast
       console.log("response ok!");
+    } else {
+      // TODO fail toast
     }
   };
 
@@ -110,6 +113,9 @@ const IconContainer = styled.div`
   cursor: pointer;
   :hover {
     opacity: 0.8;
+  }
+  @media (max-width: 425px) {
+    top: unset;
   }
 `;
 
