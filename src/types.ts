@@ -1,7 +1,15 @@
-export interface NewUser {
+export interface BaseUser {
   first_name: string;
   last_name: string;
   email: string;
+}
+
+export interface User extends BaseUser {
+  id: 14;
+  display_picture: string;
+}
+
+export interface UserRegistration extends BaseUser {
   password: string;
   password_confirmation: string;
 }
@@ -11,28 +19,4 @@ export interface UserCredentials {
   password: string;
 }
 
-export interface User {
-  id: 14;
-  first_name: string;
-  last_name: string;
-  email: string;
-  display_picture: string;
-}
-
 export type Token = { token: string };
-
-export interface AllUsersResponse {
-  page: number;
-  per_page: number;
-  total: number;
-  total_pages: number;
-  data: User[];
-}
-
-export interface CreateUserResponse {
-  id: number;
-  first_name: string;
-  last_name: string;
-  email: string;
-  display_picture: string;
-}

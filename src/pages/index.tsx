@@ -24,11 +24,6 @@ import "react-toastify/dist/ReactToastify.css";
 export default function Home() {
   const router = useRouter();
 
-  const existingUserData = {
-    email: "test@simon.com",
-    password: "hello",
-  };
-
   type Inputs = {
     firstName: string;
     lastName: string;
@@ -63,18 +58,16 @@ export default function Home() {
         password: data.password,
         password_confirmation: data.passwordConfirmation,
       });
-      if (response.ok) {
-        router.push("/login");
-        toast("User successfully created");
-      } else if (response.statusCode === 409) {
+      if (response.statusCode === 409) {
         toast.error("User already exists for the email provided");
-      } else {
+      } else if (response.statusCode === 422) {
         toast.error("Unable to register. Please check details and try again");
+      } else {
+        router.push("/login?from=register");
       }
     }
   };
 
-  console.log({ errors });
   return (
     <>
       <Head>
@@ -153,6 +146,7 @@ export default function Home() {
             </Panel>
           </Content>
         </PageLayout>
+        <ToastContainer theme={"dark"} />
       </main>
     </>
   );

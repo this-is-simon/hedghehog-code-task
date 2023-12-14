@@ -3,22 +3,27 @@ import { Panel } from "../../components/Panel";
 import { Content } from "..";
 import { Button } from "../../components/Button";
 import Link from "next/link";
-import { Footnote, LargeTitle } from "../../components/Typography";
+import { Footnote, Headline, LargeTitle } from "../../components/Typography";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { login } from "../../backend";
 import { Flex } from "../../components/Flex";
 import { Input } from "../../components/Input";
 import { useRouter } from "next/router";
-import { Token } from "../../types";
 import { validateEmail } from "../../utils";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useEffect } from "react";
+import styled from "styled-components";
+
+type Inputs = {
+  email: string;
+  password: string;
+};
 
 export default function Login() {
-  type Inputs = {
-    email: string;
-    password: string;
-  };
+  const router = useRouter();
+  let { from } = router.query;
+  const showRegistrationSuccess = from === "register";
 
   const {
     register,
@@ -26,8 +31,6 @@ export default function Login() {
     formState: { errors },
     setError,
   } = useForm<Inputs>();
-
-  const router = useRouter();
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     if (!validateEmail(data?.email)) {
@@ -53,7 +56,15 @@ export default function Login() {
     <PageLayout>
       <Content>
         <LargeTitle role={"h1"}>Login</LargeTitle>
-        <Panel>
+        <Panel
+          css={`
+            display: flex;
+            flex-direction: column;
+          `}
+        >
+          {showRegistrationSuccess && (
+            <SuccessMessage>Registration successful! Please log in</SuccessMessage>
+          )}
           <form
             onSubmit={handleSubmit(onSubmit)}
             css={`
@@ -87,19 +98,31 @@ export default function Login() {
               />
               <Button
                 css={`
-                  margin: var(--spacing-md);
+                  margin-top: var(--spacing-md);
                 `}
               >
                 Login
               </Button>
-              <Footnote>
+              <FooterMessage>
                 If you haven't already, please <Link href="/">register here</Link> to log in.
-              </Footnote>
+              </FooterMessage>
             </Flex>
           </form>
         </Panel>
       </Content>
-      <ToastContainer theme={"colored"} />
+      <ToastContainer theme={"dark"} />
     </PageLayout>
   );
 }
+
+const SuccessMessage = styled(Headline)`
+  color: var(--button-text-color);
+  text-align: center;
+  max-width: 200px;
+  align-self: center;
+`;
+
+const FooterMessage = styled(Footnote)`
+  max-width: 200px;
+  margin-bottom: var(--spacing-sm);
+`;

@@ -1,9 +1,9 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { PageLayout } from "../../components/Page";
 import { Panel } from "../../components/Panel";
 import { Footnote, Headline, LargeTitle } from "../../components/Typography";
-import { deleteUser, fetchAllUsers } from "../../backend";
-import { AllUsersResponse, User } from "../../types";
+import { AllUsersResponse, deleteUser, fetchAllUsers } from "../../backend";
+import { User } from "../../types";
 import { Button } from "../../components/Button";
 import { Flex } from "../../components/Flex";
 import styled from "styled-components";

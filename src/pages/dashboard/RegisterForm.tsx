@@ -1,11 +1,10 @@
 import React from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
-import styled from "styled-components";
 import { Flex } from "../../components/Flex";
 import { Input } from "../../components/Input";
 import { Button } from "../../components/Button";
 import { addNewUser } from "../../backend";
-import { CreateUserResponse, User } from "../../types";
+import { User } from "../../types";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -76,13 +75,6 @@ const RegisterForm = ({ onClose, appendUser }: Props) => {
           name={"email"}
           label={"Email"}
           type="email"
-          // register={register("email", {
-          //   required: "Email is required",
-          //   pattern: {
-          //     value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
-          //     message: "Invalid email address",
-          //   },
-          // })}
           register={register}
           error={errors?.email?.message}
         />

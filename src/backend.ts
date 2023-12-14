@@ -1,43 +1,46 @@
-import {
-  UserCredentials,
-  NewUser,
-  Token,
-  User,
-  AllUsersResponse,
-  CreateUserResponse,
-} from "./types";
+import { UserCredentials, UserRegistration, Token, User } from "./types";
 
-interface RegisterUserError {
+interface Error {
   statusCode?: number;
   data?: {
     message?: string;
   };
 }
-//TODO remove?
 
-export const registerUser = (data: NewUser): Promise<any> => {
-  //TODO fix type ^
+interface RegisterUserResponse extends Error {
+  statusCode?: number;
+  data?: {
+    message?: string;
+  };
+}
+
+interface LoginResponse extends Token, Error {}
+
+export interface AllUsersResponse {
+  page: number;
+  per_page: number;
+  total: number;
+  total_pages: number;
+  data: User[];
+}
+
+export interface CreateUserResponse {
+  id: number;
+  first_name: string;
+  last_name: string;
+  email: string;
+  display_picture: string;
+}
+
+export const registerUser = (data: UserRegistration): Promise<RegisterUserResponse> => {
   return fetch("http://localhost:3002/api/register", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(data),
-  })
-    .then((response) => response)
-    .catch((error) => {
-      console.error("Error:", error);
-      return error;
-    });
+  }).then((response) => response.json());
 };
-
-interface LoginResponse {
-  token?: string;
-  statusCode?: 422;
-  data?: {
-    message?: string;
-  };
-}
 
 export const login = (data: UserCredentials): Promise<LoginResponse> => {
   return fetch("http://localhost:3002/api/login", {

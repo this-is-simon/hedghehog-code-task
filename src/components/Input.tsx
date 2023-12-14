@@ -2,7 +2,6 @@ import styled from "styled-components";
 import { Flex } from "./Flex";
 import { Footnote } from "./Typography";
 import { forwardRef } from "react";
-import { useForm } from "react-hook-form";
 
 interface Props {
   label?: string;

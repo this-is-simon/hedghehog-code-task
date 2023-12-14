@@ -18,7 +18,7 @@ const PageContainer = styled.div`
   align-items: center;
   padding: var(--spacing-xxl) var(--spacing-xl);
   @media (max-width: 480px) {
-    padding: var(--spacing-xl) var(--spacing-xxs);
+    padding: var(--spacing-xxl) var(--spacing-xxs);
   }
 `;
 
