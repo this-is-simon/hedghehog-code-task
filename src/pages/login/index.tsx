@@ -24,6 +24,7 @@ export default function Login() {
   const router = useRouter();
   let { from } = router.query;
   const showRegistrationSuccess = from === "register";
+  const showLogOutSuccess = from === "logout";
 
   const {
     register,
@@ -65,6 +66,7 @@ export default function Login() {
           {showRegistrationSuccess && (
             <SuccessMessage>Registration successful! Please log in</SuccessMessage>
           )}
+          {showLogOutSuccess && <SuccessMessage>Logout successful!</SuccessMessage>}
           <form
             onSubmit={handleSubmit(onSubmit)}
             css={`

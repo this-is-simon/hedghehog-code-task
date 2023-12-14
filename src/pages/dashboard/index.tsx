@@ -8,17 +8,19 @@ import { Button } from "../../components/Button";
 import { Flex } from "../../components/Flex";
 import styled from "styled-components";
 import Image from "next/image";
-import { FaTrash } from "react-icons/fa";
+import { FaDoorOpen, FaTrash } from "react-icons/fa";
 import React from "react";
 import Modal from "../../components/Modal";
 import RegisterForm from "./RegisterForm";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useRouter } from "next/router";
 
 export default function Dashboard() {
   const [users, setUsers] = useState<AllUsersResponse>();
   const [page, setPage] = useState<number>(1);
   const [isOpen, setIsOpen] = useState<boolean>();
+  const router = useRouter();
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -28,12 +30,21 @@ export default function Dashboard() {
     fetchUsers();
   }, [page]);
 
+  useEffect(() => {
+    if (page === users?.page && users?.data?.length === 0) {
+      setPage(page - 1);
+    }
+  }, [page, users]);
+
   const handleDelete = async (id: number) => {
     const response = await deleteUser(id);
     if (response.ok) {
       toast("User deleted");
       let filteredUsers: User[] = users?.data?.filter((user) => user?.id !== id);
       setUsers({ ...users, data: filteredUsers });
+      if (filteredUsers.length === 0) {
+        setPage(page - 1);
+      }
     } else {
       toast.error("User not deleted");
     }
@@ -92,6 +103,22 @@ export default function Dashboard() {
           }}
         />
       </Modal>
+      <LogoutContainer>
+        <Button
+          onClick={() => {
+            localStorage.removeItem("token");
+            router.push("/login?from=logout");
+          }}
+          css={`
+            display: flex;
+            gap: var(--spacing-md);
+            margin-top: var(--spacing-lg);
+          `}
+        >
+          <Headline>Log out</Headline>
+          <FaDoorOpen size={20} />
+        </Button>
+      </LogoutContainer>
       <ToastContainer theme={"dark"} />
     </PageLayout>
   );
@@ -133,6 +160,8 @@ const IconContainer = styled.div`
     top: unset;
   }
 `;
+
+const LogoutContainer = styled(Flex)``;
 
 const StyledPanel = styled(Panel)`
   display: flex;
