@@ -1,5 +1,4 @@
-import styled, { css } from "styled-components";
-import { smallScreenAndBelow } from "../mediaQuery";
+import styled from "styled-components";
 
 interface Props {
   children: React.ReactNode;
@@ -29,7 +28,4 @@ const PageContent = styled.div`
     min-width: auto;
     max-width: auto;
   }
-  /* display: flex;
-  justify-content: center;
-  direction: column; */
 `;
