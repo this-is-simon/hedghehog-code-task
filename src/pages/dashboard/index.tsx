@@ -2,12 +2,13 @@ import { useEffect, useState } from "react";
 import { PageLayout } from "../../components/Page";
 import { Panel } from "../../components/Panel";
 import { Footnote, Headline, LargeTitle } from "../../components/Typography";
-import { fetchAllUsers } from "../../backend";
+import { deleteUser, fetchAllUsers } from "../../backend";
 import { AllUsersResponse } from "../../types";
 import { Button } from "../../components/Button";
 import { Flex } from "../../components/Flex";
 import styled from "styled-components";
 import Image from "next/image";
+import { FaTrash } from "react-icons/fa";
 
 export default function Dashboard() {
   const [token, setToken] = useState<string>();
@@ -30,6 +31,13 @@ export default function Dashboard() {
       allUsersPromise();
     }
   }, [token, page]);
+
+  const handleDelete = async (id) => {
+    const response = await deleteUser(id);
+    if (response.ok) {
+      console.log("response ok!");
+    }
+  };
 
   return (
     <PageLayout>
@@ -55,7 +63,9 @@ export default function Dashboard() {
             </Headline>
             <Footnote>{user.email}</Footnote>
             <Footnote>ID: {user.id}</Footnote>
-            <Footnote></Footnote>
+            <IconContainer onClick={() => handleDelete(user.id)}>
+              <FaTrash size={20} />
+            </IconContainer>
           </UserDetails>
         </StyledPanel>
       ))}
@@ -78,8 +88,20 @@ const ImageContainer = styled.div`
   height: 150px;
 `;
 
+const IconContainer = styled.div`
+  position: absolute;
+  right: 0;
+  top: 40%;
+  margin: var(--spacing-md);
+  cursor: pointer;
+  :hover {
+    opacity: 0.8;
+  }
+`;
+
 const StyledPanel = styled(Panel)`
   display: flex;
+  position: relative;
   gap: var(--spacing-md);
   @media (max-width: 425px) {
     flex-direction: column;

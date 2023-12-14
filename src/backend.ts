@@ -94,8 +94,9 @@ export const createUser = (
     });
 };
 
-export const deleteUser = (token: string, id: number): Promise<void | Error> => {
+export const deleteUser = (id: number): Promise<any> => {
   console.log("delete user", id);
+  let token = localStorage.getItem("token");
   const headers = new Headers({
     Authorization: `Bearer ${token}`,
   });
@@ -103,9 +104,7 @@ export const deleteUser = (token: string, id: number): Promise<void | Error> => 
     method: "DELETE",
     headers,
   })
-    .then((response) => {
-      return response.json();
-    })
+    .then((response) => response)
     .catch((error) => {
       console.error("Error:", error);
       return error;
