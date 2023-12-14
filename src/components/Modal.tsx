@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { Panel } from "./Panel";
 import { Button } from "./Button";
 import { Flex } from "./Flex";
+import { FaWindowClose } from "react-icons/fa";
 
 interface ModalProps {
   isOpen: boolean;
@@ -19,21 +20,9 @@ const AddUserModal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
       <ModalContent>
         <h2>Add User</h2>
         {children}
-        <Flex gap={"var(--spacing-sm)"} justify={"flex-end"}>
-          {/* //TODO make the cancel button in the top right*/}
-          <Button
-            css={`
-              background: var(--error-color);
-            `}
-            aria-label={"button"}
-            onClick={onClose}
-          >
-            Cancel
-          </Button>
-          {/* <Button aria-label={"button"} onClick={onClose}>
-            Add User
-          </Button> */}
-        </Flex>
+        <IconContainer onClick={onClose}>
+          <FaWindowClose size={20} />
+        </IconContainer>
       </ModalContent>
     </ModalWrapper>
   );
@@ -54,7 +43,21 @@ const ModalWrapper = styled.div`
 const ModalContent = styled(Panel)`
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   background: black;
+  padding: var(--spacing-lg);
   width: 300px;
+  position: relative;
+`;
+
+const IconContainer = styled.div`
+  position: absolute;
+  padding: var(--spacing-sm);
+  margin: var(--spacing-sm);
+  top: 0;
+  right: 0;
+  cursor: pointer;
+  :hover {
+    opacity: 0.6;
+  }
 `;
 
 export default AddUserModal;

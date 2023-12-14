@@ -23,7 +23,7 @@ const RegisterForm = ({ onClose, appendUser }: Props) => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm<FormInput>();
 
   const onSubmit: SubmitHandler<FormInput> = async (data) => {
@@ -86,8 +86,16 @@ const RegisterForm = ({ onClose, appendUser }: Props) => {
           register={register}
           error={errors?.email?.message}
         />
+        <Button
+          css={`
+            align-self: flex-end;
+          `}
+          aria-label={"button"}
+          disabled={!isValid}
+        >
+          Add User
+        </Button>
       </Flex>
-      <Button aria-label={"button"}>Add User</Button>
     </form>
   );
 };

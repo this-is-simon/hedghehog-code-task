@@ -39,28 +39,23 @@ export default function Dashboard() {
   console.log(users?.page);
   return (
     <PageLayout>
-      <Flex gap={"var(--spacing-md)"} justify={"space-between"}>
+      <Heading gap={"var(--spacing-md)"} justify={"space-between"}>
         <Flex gap={"var(--spacing-md)"}>
           <LargeTitle>Dashboard</LargeTitle>
         </Flex>
         <PageButtons>
           <Button onClick={() => setIsOpen(true)}>Add User</Button>
           <Flex gap={"var(--spacing-md)"}>
-            {/* {users?.page > 1 &&  */}
             <Button disabled={users?.page <= 1} onClick={() => setPage(page - 1)}>
-              Previous page
+              Previous
             </Button>
-            {/* } */}
             <Footnote>Page {users?.page}</Footnote>
-            {/* {page < users?.total_pages && ( */}
             <Button disabled={page >= users?.total_pages} onClick={() => setPage(page + 1)}>
-              Next page
+              Next
             </Button>
-            {/* )} */}
           </Flex>
         </PageButtons>
-      </Flex>
-
+      </Heading>
       {users?.data?.map((user) => (
         <StyledPanel>
           <ImageContainer>
@@ -98,6 +93,12 @@ export default function Dashboard() {
     </PageLayout>
   );
 }
+
+const Heading = styled(Flex)`
+  @media (max-width: 768px) {
+    flex-wrap: wrap;
+  }
+`;
 const PageButtons = styled(Flex)`
   width: 100%;
   gap: var(--spacing-sm);
