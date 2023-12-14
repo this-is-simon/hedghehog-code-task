@@ -30,7 +30,7 @@ export default function Login() {
   const router = useRouter();
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    const response = await login({
+    const response: Token = await login({
       email: data.email,
       password: data.password,
     });
@@ -88,15 +88,3 @@ export default function Login() {
     </PageLayout>
   );
 }
-
-// const Content = styled.div`
-//   display: flex;
-//   flex-direction: column;
-//   min-width: 300px;
-//   box-sizing: border-box;
-
-//   @media (max-width: 768px) {
-//     min-width: auto;
-//     flex-direction: column;
-//   }
-// `;

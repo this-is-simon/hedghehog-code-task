@@ -18,6 +18,9 @@ const nextConfig = {
       // pure?: boolean,
     },
   },
+  images: {
+    domains: ["i.pravatar.cc"],
+  },
   webpack(config) {
     config.resolve.fallback = { fs: false };
 
