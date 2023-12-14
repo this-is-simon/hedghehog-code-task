@@ -10,6 +10,7 @@ import { Flex } from "../../components/Flex";
 import { Input } from "../../components/Input";
 import { useRouter } from "next/router";
 import { Token } from "../../types";
+import { validateEmail } from "../../utils";
 
 export default function Login() {
   type Inputs = {
@@ -21,19 +22,34 @@ export default function Login() {
     register,
     handleSubmit,
     formState: { errors },
+    setError,
   } = useForm<Inputs>();
 
   const router = useRouter();
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    const response: Token = await login({
-      email: data.email,
-      password: data.password,
-    });
-    if (response.token) {
-      localStorage.setItem("token", response.token);
-      router.push("/dashboard");
+    if (!validateEmail(data?.email)) {
+      setError("email", {
+        type: "manual",
+        message: "Must be a valid email address",
+      });
+    } else {
+      let response = await login({
+        email: data.email,
+        password: data.password,
+      });
+
+      console.log(response);
+      if (response.statusCode === 422) {
+        console.log("422 :)");
+        //toast
+        // invalid credentials
+      }
     }
+    // if (response.token) {
+    //   localStorage.setItem("token", response.token);
+    //   router.push("/dashboard");
+    // }
   };
 
   return (

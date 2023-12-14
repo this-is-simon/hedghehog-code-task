@@ -22,19 +22,22 @@ export const registerUser = (data: NewUser): Promise<Response> => {
     });
 };
 
-export const login = (data: UserCredentials): Promise<Token> => {
+interface LoginResponse {
+  token?: string;
+  statusCode?: 422;
+  data?: {
+    message?: string;
+  };
+}
+
+export const login = (data: UserCredentials): Promise<LoginResponse> => {
   return fetch("http://localhost:3002/api/login", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(data),
-  })
-    .then((response) => response.json())
-    .catch((error) => {
-      console.error("Error:", error);
-      return error;
-    });
+  }).then((response) => response.json());
 };
 
 interface QueryParams {

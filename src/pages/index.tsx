@@ -114,7 +114,6 @@ export default function Home() {
                 >
                   <Input
                     label={"First Name"}
-                    aria-label={"First Name"}
                     name={"firstName"}
                     register={register}
                     error={errors?.firstName?.message}
@@ -122,7 +121,6 @@ export default function Home() {
                   />
                   <Input
                     label={"Last Name"}
-                    aria-label={"Last Name"}
                     name={"lastName"}
                     register={register}
                     error={errors?.lastName?.message}
@@ -130,7 +128,6 @@ export default function Home() {
                   />
                   <Input
                     label={"Email"}
-                    aria-label={"Email"}
                     name="email"
                     register={register}
                     error={errors?.email?.message}
@@ -139,7 +136,6 @@ export default function Home() {
                   />
                   <Input
                     label={"Password"}
-                    aria-label={"Password"}
                     name={"password"}
                     register={register}
                     error={errors?.password?.message}
@@ -148,7 +144,6 @@ export default function Home() {
                   />
                   <Input
                     label={"Password Confirmation"}
-                    aria-label={"Password Confirmation"}
                     name={"passwordConfirmation"}
                     register={register}
                     error={errors?.passwordConfirmation?.message}
@@ -175,8 +170,6 @@ export default function Home() {
   );
 }
 
-// const Input = styled.input``;
-
 export const Content = styled.div`
   display: flex;
   flex-direction: column;
@@ -186,12 +179,5 @@ export const Content = styled.div`
     min-width: auto;
     max-width: 400px;
     flex-direction: column;
-  }
-`;
-
-const StyledIcon = styled.a`
-  color: rgb(var(--text-color));
-  &:hover {
-    opacity: 0.6;
   }
 `;

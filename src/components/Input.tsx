@@ -23,7 +23,7 @@ export const Input = forwardRef<HTMLInputElement, Props>(
           width: 100%;
         `}
       >
-        <StyledLabel role="label">
+        <StyledLabel role="label" aria-label={label}>
           {label}
           {required && "*"}
         </StyledLabel>
