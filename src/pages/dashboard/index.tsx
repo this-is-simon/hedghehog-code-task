@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { PageLayout } from "../../components/Page";
 import { Panel } from "../../components/Panel";
 import { Footnote, Headline, LargeTitle } from "../../components/Typography";
@@ -14,27 +14,17 @@ import Modal from "../../components/Modal";
 import RegisterForm from "../../components/RegisterForm";
 
 export default function Dashboard() {
-  const [token, setToken] = useState<string>();
   const [users, setUsers] = useState<AllUsersResponse>();
   const [page, setPage] = useState<number>(1);
   const [isOpen, setIsOpen] = useState<boolean>();
 
   useEffect(() => {
-    if (window !== undefined) {
-      const token = localStorage.getItem("token");
-      setToken(token);
-    }
-  }, [token]);
-
-  useEffect(() => {
-    if (Boolean(token)) {
-      const allUsersPromise = async () => {
-        const allUsers = await fetchAllUsers(token, { page });
-        setUsers(allUsers);
-      };
-      allUsersPromise();
-    }
-  }, [token, page]);
+    const allUsersPromise = async () => {
+      const allUsers = await fetchAllUsers({ page });
+      setUsers(allUsers);
+    };
+    allUsersPromise();
+  }, [page]);
 
   const handleDelete = async (id) => {
     const response = await deleteUser(id);
@@ -78,7 +68,14 @@ export default function Dashboard() {
         </StyledPanel>
       ))}
       <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
-        <RegisterForm onClose={() => setIsOpen(false)} />
+        <RegisterForm
+          onClose={() => {
+            setIsOpen(false);
+          }}
+          appendUser={(newUser) => {
+            setUsers({ ...users, data: [...users.data, newUser] });
+          }}
+        />
       </Modal>
     </PageLayout>
   );

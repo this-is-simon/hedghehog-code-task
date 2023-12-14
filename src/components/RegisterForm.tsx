@@ -5,6 +5,7 @@ import { Flex } from "./Flex";
 import { Input } from "./Input";
 import { Button } from "./Button";
 import { createUser } from "../backend";
+import { CreateUserResponse } from "../types";
 
 interface FormInput {
   first_name: string;
@@ -14,9 +15,11 @@ interface FormInput {
 
 interface Props {
   onClose: () => void;
+  appendUser: (newUser: any) => void;
+  //TODO fix the type here ^
 }
 
-const RegisterForm = ({ onClose }: Props) => {
+const RegisterForm = ({ onClose, appendUser }: Props) => {
   const {
     register,
     handleSubmit,
@@ -31,6 +34,7 @@ const RegisterForm = ({ onClose }: Props) => {
     });
     if (response.ok) {
       //TODO add success toast
+      appendUser(await response.json());
       onClose();
     } else {
       // failure toast

@@ -1,4 +1,3 @@
-import styled from "styled-components";
 import { PageLayout } from "../../components/Page";
 import { Panel } from "../../components/Panel";
 import { Content } from "..";
@@ -21,10 +20,7 @@ export default function Login() {
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
-    setError,
-    getValues,
   } = useForm<Inputs>();
 
   const router = useRouter();
@@ -58,7 +54,6 @@ export default function Login() {
               flex={1}
             >
               <h1>Log In</h1>
-
               <Input
                 label={"Email"}
                 aria-label={"Email"}

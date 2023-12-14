@@ -15,9 +15,7 @@ export const registerUser = (data: NewUser): Promise<User | Error> => {
     },
     body: JSON.stringify(data),
   })
-    .then((response) => {
-      return response.json();
-    })
+    .then((response) => response.json())
     .catch((error) => {
       console.error("Error:", error);
       return error;
@@ -32,35 +30,41 @@ export const login = (data: UserCredentials): Promise<Token> => {
     },
     body: JSON.stringify(data),
   })
-    .then((response) => {
-      return response.json();
-    })
+    .then((response) => response.json())
     .catch((error) => {
       console.error("Error:", error);
       return error;
     });
 };
 
-export const fetchAllUsers = (
-  token: string,
-  queryParams?: {
-    per_page?: number; // default 10
-    page?: number;
-  }
-): Promise<AllUsersResponse> => {
+export const fetchAllUsers = (queryParams?: {
+  per_page?: number; // default 10
+  page?: number; // default: 1
+}): Promise<AllUsersResponse> => {
+  let token = localStorage.getItem("token");
   const headers = new Headers({
     Authorization: `Bearer ${token}`,
     "Content-Type": "application/json",
   });
-  let url = `http://localhost:3002/api/users?page=${queryParams?.page}`;
+  const params = new URLSearchParams();
+  if (queryParams?.per_page) {
+    params.append("per_page", String(queryParams.per_page));
+  }
+  if (queryParams?.page) {
+    params.append("page", String(queryParams.page));
+  }
+  let url = `http://localhost:3002/api/users`;
+
+  if (params.toString()) {
+    url += `?${params.toString()}`;
+  }
+
   console.log("url", url);
   return fetch(url, {
     method: "GET",
     headers,
   })
-    .then((response) => {
-      return response.json();
-    })
+    .then((response) => response.json())
     .catch((error) => {
       console.error("Error:", error);
       return error;
