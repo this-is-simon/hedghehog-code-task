@@ -37,27 +37,19 @@ export const login = (data: UserCredentials): Promise<Token> => {
     });
 };
 
-export const fetchAllUsers = (queryParams?: {
+interface QueryParams {
   per_page?: number; // default 10
   page?: number; // default: 1
-}): Promise<AllUsersResponse> => {
+}
+
+export const fetchAllUsers = (queryParams?: QueryParams): Promise<AllUsersResponse> => {
   let token = localStorage.getItem("token");
   const headers = new Headers({
     Authorization: `Bearer ${token}`,
     "Content-Type": "application/json",
   });
-  const params = new URLSearchParams();
-  if (queryParams?.per_page) {
-    params.append("per_page", String(queryParams.per_page));
-  }
-  if (queryParams?.page) {
-    params.append("page", String(queryParams.page));
-  }
-  let url = `http://localhost:3002/api/users`;
-
-  if (params.toString()) {
-    url += `?${params.toString()}`;
-  }
+  let rawUrl = `http://localhost:3002/api/users`;
+  let url = handleParams(rawUrl, queryParams);
 
   console.log("url", url);
   return fetch(url, {
@@ -108,4 +100,18 @@ export const deleteUser = (id: number): Promise<Response> => {
       console.error("Error:", error);
       return error;
     });
+};
+
+const handleParams = (url: string, queryParams?: QueryParams) => {
+  const params = new URLSearchParams();
+  if (queryParams?.per_page) {
+    params.append("per_page", String(queryParams.per_page));
+  }
+  if (queryParams?.page) {
+    params.append("page", String(queryParams.page));
+  }
+  if (params.toString()) {
+    url += `?${params.toString()}`;
+  }
+  return url;
 };

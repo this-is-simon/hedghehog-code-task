@@ -11,7 +11,7 @@ import Image from "next/image";
 import { FaTrash } from "react-icons/fa";
 import React from "react";
 import Modal from "../../components/Modal";
-import RegisterForm from "../../components/RegisterForm";
+import RegisterForm from "./RegisterForm";
 
 export default function Dashboard() {
   const [users, setUsers] = useState<AllUsersResponse>();
@@ -52,7 +52,13 @@ export default function Dashboard() {
       {users?.data?.map((user) => (
         <StyledPanel>
           <ImageContainer>
-            <Image fill objectFit="contain" src={user.display_picture} alt="User display picture" />
+            <Image
+              fill
+              priority
+              objectFit="contain"
+              src={user.display_picture}
+              alt="User display picture"
+            />
           </ImageContainer>
           <UserDetails>
             <Headline>

@@ -1,11 +1,11 @@
 import React from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import styled from "styled-components";
-import { Flex } from "./Flex";
-import { Input } from "./Input";
-import { Button } from "./Button";
-import { createUser } from "../backend";
-import { CreateUserResponse } from "../types";
+import { Flex } from "../../components/Flex";
+import { Input } from "../../components/Input";
+import { Button } from "../../components/Button";
+import { createUser } from "../../backend";
+import { CreateUserResponse } from "../../types";
 
 interface FormInput {
   first_name: string;
