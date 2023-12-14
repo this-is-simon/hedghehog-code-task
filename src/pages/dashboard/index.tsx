@@ -3,7 +3,7 @@ import { PageLayout } from "../../components/Page";
 import { Panel } from "../../components/Panel";
 import { Footnote, Headline, LargeTitle } from "../../components/Typography";
 import { deleteUser, fetchAllUsers } from "../../backend";
-import { AllUsersResponse } from "../../types";
+import { AllUsersResponse, User } from "../../types";
 import { Button } from "../../components/Button";
 import { Flex } from "../../components/Flex";
 import styled from "styled-components";
@@ -26,10 +26,12 @@ export default function Dashboard() {
     fetchUsers();
   }, [page]);
 
-  const handleDelete = async (id) => {
+  const handleDelete = async (id: number) => {
     const response = await deleteUser(id);
     if (response.ok) {
       //TODO success toast
+      let filteredUsers: User[] = users?.data?.filter((user) => user?.id !== id);
+      setUsers({ ...users, data: filteredUsers });
       console.log("response ok!");
     } else {
       // TODO fail toast
