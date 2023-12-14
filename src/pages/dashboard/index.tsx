@@ -17,36 +17,47 @@ import "react-toastify/dist/ReactToastify.css";
 import { useRouter } from "next/router";
 
 export default function Dashboard() {
-  const [users, setUsers] = useState<AllUsersResponse>();
-  const [page, setPage] = useState<number>(1);
+  const [pageData, setPageData] = useState<AllUsersResponse>();
+  const [pageNumber, setPageNumber] = useState<number>(1);
   const [isOpen, setIsOpen] = useState<boolean>();
   const router = useRouter();
+  const PAGE_SIZE = 10;
 
   useEffect(() => {
     const fetchUsers = async () => {
-      const allUsers = await fetchAllUsers({ page });
-      setUsers(allUsers);
+      const allUsers = await fetchAllUsers({ page: pageNumber, per_page: PAGE_SIZE });
+      setPageData(allUsers);
     };
     fetchUsers();
-  }, [page]);
+  }, [pageNumber]);
 
   useEffect(() => {
-    if (page === users?.page && users?.data?.length === 0) {
-      setPage(page - 1);
+    if (pageNumber === pageData?.page && pageData?.data?.length === 0) {
+      setPageNumber(pageNumber - 1);
     }
-  }, [page, users]);
+  }, [pageNumber, pageData]);
 
   const handleDelete = async (id: number) => {
     const response = await deleteUser(id);
     if (response.ok) {
       toast("User deleted");
-      let filteredUsers: User[] = users?.data?.filter((user) => user?.id !== id);
-      setUsers({ ...users, data: filteredUsers });
+      let filteredUsers: User[] = pageData?.data?.filter((user) => user?.id !== id);
+      setPageData({ ...pageData, data: filteredUsers });
       if (filteredUsers.length === 0) {
-        setPage(page - 1);
+        setPageNumber(pageNumber - 1);
       }
     } else {
       toast.error("User not deleted");
+    }
+  };
+
+  const handleAddUser = async (newUser: User) => {
+    if (pageData?.data?.length + 1 > pageData?.per_page) {
+      const refetchedUsers = await fetchAllUsers({ page: pageNumber, per_page: PAGE_SIZE });
+      setPageData(refetchedUsers);
+      setPageNumber(pageNumber + 1);
+    } else {
+      setPageData({ ...pageData, data: [...pageData.data, newUser] });
     }
   };
 
@@ -59,17 +70,20 @@ export default function Dashboard() {
         <PageButtons>
           <Button onClick={() => setIsOpen(true)}>Add User</Button>
           <Flex gap={"var(--spacing-md)"}>
-            <Button disabled={users?.page <= 1} onClick={() => setPage(page - 1)}>
+            <Button disabled={pageData?.page <= 1} onClick={() => setPageNumber(pageNumber - 1)}>
               Previous
             </Button>
-            <Footnote>Page {users?.page}</Footnote>
-            <Button disabled={page >= users?.total_pages} onClick={() => setPage(page + 1)}>
+            <Footnote>Page {pageData?.page}</Footnote>
+            <Button
+              disabled={pageNumber >= pageData?.total_pages}
+              onClick={() => setPageNumber(pageNumber + 1)}
+            >
               Next
             </Button>
           </Flex>
         </PageButtons>
       </Heading>
-      {users?.data?.map((user) => (
+      {pageData?.data?.map((user) => (
         <StyledPanel>
           <ImageContainer>
             <Image
@@ -98,9 +112,7 @@ export default function Dashboard() {
           onClose={() => {
             setIsOpen(false);
           }}
-          appendUser={(newUser) => {
-            setUsers({ ...users, data: [...users.data, newUser] });
-          }}
+          appendUser={handleAddUser}
         />
       </Modal>
       <LogoutContainer>
@@ -129,23 +141,6 @@ const Heading = styled(Flex)`
     flex-wrap: wrap;
   }
 `;
-const PageButtons = styled(Flex)`
-  width: 100%;
-  gap: var(--spacing-sm);
-  justify-content: space-between;
-`;
-
-const UserDetails = styled(Flex)`
-  width: 100%;
-  align-items: flex-start;
-  flex-direction: column;
-`;
-
-const ImageContainer = styled.div`
-  position: relative;
-  width: 150px;
-  height: 150px;
-`;
 
 const IconContainer = styled.div`
   position: absolute;
@@ -161,7 +156,19 @@ const IconContainer = styled.div`
   }
 `;
 
+const ImageContainer = styled.div`
+  position: relative;
+  width: 150px;
+  height: 150px;
+`;
+
 const LogoutContainer = styled(Flex)``;
+
+const PageButtons = styled(Flex)`
+  width: 100%;
+  gap: var(--spacing-sm);
+  justify-content: space-between;
+`;
 
 const StyledPanel = styled(Panel)`
   display: flex;
@@ -171,4 +178,10 @@ const StyledPanel = styled(Panel)`
     flex-direction: column;
     align-items: center;
   }
+`;
+
+const UserDetails = styled(Flex)`
+  width: 100%;
+  align-items: flex-start;
+  flex-direction: column;
 `;
