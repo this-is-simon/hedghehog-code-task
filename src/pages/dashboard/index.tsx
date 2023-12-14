@@ -41,7 +41,7 @@ export default function Dashboard() {
     <PageLayout>
       <Heading gap={"var(--spacing-md)"} justify={"space-between"}>
         <Flex gap={"var(--spacing-md)"}>
-          <LargeTitle>Dashboard</LargeTitle>
+          <LargeTitle role={"h1"}>Dashboard</LargeTitle>
         </Flex>
         <PageButtons>
           <Button onClick={() => setIsOpen(true)}>Add User</Button>

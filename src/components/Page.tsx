@@ -16,16 +16,20 @@ const PageContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-height: 100vh;
   padding: var(--spacing-xxl) var(--spacing-xl);
-  ${smallScreenAndBelow(
-    css`
-      padding: var(--spacing-xl) var(--spacing-xxs);
-    `
-  )};
+  @media (max-width: 480px) {
+    padding: var(--spacing-xl) var(--spacing-xxs);
+  }
 `;
 
 const PageContent = styled.div`
-  max-width: 1000px;
+  max-width: 600px;
   width: 100%;
+  @media (max-width: 768px) {
+    min-width: auto;
+    max-width: auto;
+  }
+  /* display: flex;
+  justify-content: center;
+  direction: column; */
 `;

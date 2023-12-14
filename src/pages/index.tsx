@@ -1,5 +1,12 @@
 import Head from "next/head";
-import { Body, Footnote, HeaderTitle, Headline, Title2 } from "../components/Typography";
+import {
+  Body,
+  Footnote,
+  HeaderTitle,
+  Headline,
+  LargeTitle,
+  Title2,
+} from "../components/Typography";
 import { PageLayout } from "../components/Page";
 import css, { styled } from "styled-components";
 import { Flex } from "../components/Flex";
@@ -46,23 +53,12 @@ export default function Home() {
   } = useForm<Inputs>();
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    console.log(data);
     if (data.password !== data.passwordConfirmation) {
       setError("passwordConfirmation", {
         type: "manual",
         message: "Passwords must match",
       });
-      console.log("passwords don't match");
     }
-    const emailRegex = /^[\w-]+(?:\.[\w-]+)*@(?:[\w-]+\.)+[a-zA-Z]{2,7}$/;
-    //TODO this doesn't quite work
-    //See if you can just return the response from the back end as the error
-    // if (emailRegex.test(data.email)) {
-    //   setError("email", {
-    //     type: "manual",
-    //     message: "Valid email required",
-    //   });
-    // }
 
     const response = await registerUser({
       first_name: data.firstName,
@@ -71,11 +67,11 @@ export default function Home() {
       password: data.password,
       password_confirmation: data.passwordConfirmation,
     });
-    console.log({ response });
+
     // if (response === 200) {
     // if the response is ok
     //@ts-ignore
-    if (response.id) {
+    if (response.ok) {
       router.push("/login");
     }
     // }
@@ -92,11 +88,13 @@ export default function Home() {
       <main>
         <PageLayout>
           <Content>
+            <LargeTitle role={"h1"}>Register New User</LargeTitle>
             <Panel>
               <form
                 onSubmit={handleSubmit(onSubmit)}
                 css={`
                   width: 100%;
+                  padding: var(--spacing-lg) 0;
                 `}
               >
                 <Flex
@@ -106,7 +104,6 @@ export default function Home() {
                   gap={"var(--spacing-md)"}
                   flex={1}
                 >
-                  <h1>Register New User</h1>
                   <Input
                     label={"First Name"}
                     aria-label={"First Name"}
@@ -150,9 +147,13 @@ export default function Home() {
                     type={"password"}
                     required
                   />
-                  <Button>Register</Button>
-                  <Button onClick={() => login(existingUserData)}>Login</Button>
-                  <Button type={"submit"}>Test User</Button>
+                  <Button
+                    css={`
+                      margin-top: var(--spacing-md);
+                    `}
+                  >
+                    Register
+                  </Button>
                   <Footnote>
                     Already registered? Please <Link href="/login">log in</Link>
                   </Footnote>
@@ -171,11 +172,11 @@ export default function Home() {
 export const Content = styled.div`
   display: flex;
   flex-direction: column;
-  min-width: 300px;
+  min-width: 500px;
   box-sizing: border-box;
-
-  @media (max-width: 768px) {
+  @media (max-width: 480px) {
     min-width: auto;
+    max-width: 400px;
     flex-direction: column;
   }
 `;

@@ -3,7 +3,7 @@ import { Panel } from "../../components/Panel";
 import { Content } from "..";
 import { Button } from "../../components/Button";
 import Link from "next/link";
-import { Footnote } from "../../components/Typography";
+import { Footnote, LargeTitle } from "../../components/Typography";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { login } from "../../backend";
 import { Flex } from "../../components/Flex";
@@ -39,6 +39,7 @@ export default function Login() {
   return (
     <PageLayout>
       <Content>
+        <LargeTitle role={"h1"}>Login</LargeTitle>
         <Panel>
           <form
             onSubmit={handleSubmit(onSubmit)}
@@ -53,7 +54,6 @@ export default function Login() {
               gap={"var(--spacing-md)"}
               flex={1}
             >
-              <h1>Log In</h1>
               <Input
                 label={"Email"}
                 aria-label={"Email"}
@@ -72,7 +72,13 @@ export default function Login() {
                 type={"password"}
                 required
               />
-              <Button>Login</Button>
+              <Button
+                css={`
+                  margin: var(--spacing-md);
+                `}
+              >
+                Login
+              </Button>
               <Footnote>
                 If you haven't already, please <Link href="/">register here</Link> to log in.
               </Footnote>
