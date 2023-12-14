@@ -9,11 +9,14 @@ import { Flex } from "../../components/Flex";
 import styled from "styled-components";
 import Image from "next/image";
 import { FaTrash } from "react-icons/fa";
+import React from "react";
+import Modal from "../../components/Modal";
 
 export default function Dashboard() {
   const [token, setToken] = useState<string>();
   const [users, setUsers] = useState<AllUsersResponse>();
   const [page, setPage] = useState<number>(1);
+  const [isOpen, setIsOpen] = useState<boolean>();
 
   useEffect(() => {
     if (window !== undefined) {
@@ -42,7 +45,10 @@ export default function Dashboard() {
   return (
     <PageLayout>
       <Flex justify={"space-between"}>
-        <LargeTitle>Dashboard</LargeTitle>
+        <Flex gap={"var(--spacing-md)"}>
+          <LargeTitle>Dashboard</LargeTitle>
+          <Button onClick={() => setIsOpen(true)}>Add User</Button>
+        </Flex>
         <PageButtons>
           {users?.page > 1 && <Button onClick={() => setPage(page - 1)}>Previous page</Button>}
           <Footnote>Page {users?.page}</Footnote>
@@ -61,6 +67,7 @@ export default function Dashboard() {
             <Headline>
               {user.first_name} {user.last_name}
             </Headline>
+
             <Footnote>{user.email}</Footnote>
             <Footnote>ID: {user.id}</Footnote>
             <IconContainer onClick={() => handleDelete(user.id)}>
@@ -69,6 +76,7 @@ export default function Dashboard() {
           </UserDetails>
         </StyledPanel>
       ))}
+      <Modal isOpen={isOpen} onClose={() => setIsOpen(false)} />
     </PageLayout>
   );
 }
