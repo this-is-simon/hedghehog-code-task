@@ -11,6 +11,7 @@ import Image from "next/image";
 import { FaTrash } from "react-icons/fa";
 import React from "react";
 import Modal from "../../components/Modal";
+import RegisterForm from "../../components/RegisterForm";
 
 export default function Dashboard() {
   const [token, setToken] = useState<string>();
@@ -76,7 +77,9 @@ export default function Dashboard() {
           </UserDetails>
         </StyledPanel>
       ))}
-      <Modal isOpen={isOpen} onClose={() => setIsOpen(false)} />
+      <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
+        <RegisterForm onClose={() => setIsOpen(false)} />
+      </Modal>
     </PageLayout>
   );
 }

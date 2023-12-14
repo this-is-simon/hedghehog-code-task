@@ -1,10 +1,43 @@
 import React from "react";
 import styled from "styled-components";
+import { Panel } from "./Panel";
+import { Button } from "./Button";
+import { Flex } from "./Flex";
 
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
+  children: React.ReactNode;
 }
+const AddUserModal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
+  if (!isOpen) {
+    return null;
+  }
+
+  return (
+    <ModalWrapper>
+      <ModalContent>
+        <h2>Add User</h2>
+        {children}
+        <Flex gap={"var(--spacing-sm)"} justify={"flex-end"}>
+          {/* //TODO make the cancel button in the top right*/}
+          <Button
+            css={`
+              background: var(--error-color);
+            `}
+            aria-label={"button"}
+            onClick={onClose}
+          >
+            Cancel
+          </Button>
+          {/* <Button aria-label={"button"} onClick={onClose}>
+            Add User
+          </Button> */}
+        </Flex>
+      </ModalContent>
+    </ModalWrapper>
+  );
+};
 
 const ModalWrapper = styled.div`
   position: fixed;
@@ -18,52 +51,10 @@ const ModalWrapper = styled.div`
   justify-content: center;
 `;
 
-const ModalContent = styled.div`
-  background: #fff;
-  padding: 20px;
-  border-radius: 8px;
+const ModalContent = styled(Panel)`
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background: black;
   width: 300px;
 `;
-
-const Button = styled.button`
-  background: #3498db;
-  color: #fff;
-  padding: 8px 16px;
-  margin-right: 8px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-
-  &:hover {
-    background: #2980b9;
-  }
-`;
-
-const CancelButton = styled(Button)`
-  background: #e74c3c;
-  &:hover {
-    background: #c0392b;
-  }
-`;
-
-const AddUserModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
-  if (!isOpen) {
-    return null;
-  }
-
-  return (
-    <ModalWrapper>
-      <ModalContent>
-        <h2>Add User</h2>
-        {/* Add user form or content goes here */}
-        <div>
-          <Button onClick={onClose}>Add User</Button>
-          <CancelButton onClick={onClose}>Cancel</CancelButton>
-        </div>
-      </ModalContent>
-    </ModalWrapper>
-  );
-};
 
 export default AddUserModal;

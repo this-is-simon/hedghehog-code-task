@@ -67,15 +67,12 @@ export const fetchAllUsers = (
     });
 };
 
-export const createUser = (
-  token: string,
-  newUser: {
-    first_name: string;
-    last_name: string;
-    email: string;
-  }
-): Promise<CreateUserResponse | Error> => {
-  console.log("create new user", token);
+export const createUser = (newUser: {
+  first_name: string;
+  last_name: string;
+  email: string;
+}): Promise<Response> => {
+  let token = localStorage.getItem("token");
   const headers = new Headers({
     Authorization: `Bearer ${token}`,
     "Content-Type": "application/json",
@@ -85,16 +82,14 @@ export const createUser = (
     headers,
     body: JSON.stringify(newUser),
   })
-    .then((response) => {
-      return response.json();
-    })
+    .then((response) => response)
     .catch((error) => {
       console.error("Error:", error);
       return error;
     });
 };
 
-export const deleteUser = (id: number): Promise<any> => {
+export const deleteUser = (id: number): Promise<Response> => {
   console.log("delete user", id);
   let token = localStorage.getItem("token");
   const headers = new Headers({
