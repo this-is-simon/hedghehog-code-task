@@ -36,19 +36,28 @@ export default function Dashboard() {
     }
   };
 
+  console.log(users?.page);
   return (
     <PageLayout>
-      <Flex justify={"space-between"}>
+      <Flex gap={"var(--spacing-md)"} justify={"space-between"}>
         <Flex gap={"var(--spacing-md)"}>
           <LargeTitle>Dashboard</LargeTitle>
-          <Button onClick={() => setIsOpen(true)}>Add User</Button>
         </Flex>
         <PageButtons>
-          {users?.page > 1 && <Button onClick={() => setPage(page - 1)}>Previous page</Button>}
-          <Footnote>Page {users?.page}</Footnote>
-          {page < users?.total_pages && (
-            <Button onClick={() => setPage(page + 1)}>Next page</Button>
-          )}
+          <Button onClick={() => setIsOpen(true)}>Add User</Button>
+          <Flex gap={"var(--spacing-md)"}>
+            {/* {users?.page > 1 &&  */}
+            <Button disabled={users?.page <= 1} onClick={() => setPage(page - 1)}>
+              Previous page
+            </Button>
+            {/* } */}
+            <Footnote>Page {users?.page}</Footnote>
+            {/* {page < users?.total_pages && ( */}
+            <Button disabled={page >= users?.total_pages} onClick={() => setPage(page + 1)}>
+              Next page
+            </Button>
+            {/* )} */}
+          </Flex>
         </PageButtons>
       </Flex>
 
@@ -90,7 +99,9 @@ export default function Dashboard() {
   );
 }
 const PageButtons = styled(Flex)`
+  width: 100%;
   gap: var(--spacing-sm);
+  justify-content: space-between;
 `;
 
 const UserDetails = styled(Flex)`

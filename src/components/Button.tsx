@@ -7,7 +7,14 @@ export const Button = styled.button`
   cursor: pointer;
   border-radius: 9999px;
   color: white;
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
   &:hover {
     opacity: 0.6;
+  }
+  &:active:not(:disabled) {
+    transform: scale(0.9);
   }
 `;
