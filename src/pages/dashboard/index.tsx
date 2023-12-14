@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { PageLayout } from "../../components/Page";
 import { Panel } from "../../components/Panel";
 import { Footnote, Headline, LargeTitle } from "../../components/Typography";
-import { AllUsersResponse, deleteUser, fetchAllUsers } from "../../backend";
+import { FetchPageResponse, deleteUser, fetchPageOfUsers } from "../../backend";
 import { User } from "../../types";
 import { Button } from "../../components/Button";
 import { Flex } from "../../components/Flex";
@@ -17,43 +17,45 @@ import "react-toastify/dist/ReactToastify.css";
 import { useRouter } from "next/router";
 
 export default function Dashboard() {
-  const [pageData, setPageData] = useState<AllUsersResponse>();
+  const [pageData, setPageData] = useState<FetchPageResponse>();
   const [pageNumber, setPageNumber] = useState<number>(1);
   const [isOpen, setIsOpen] = useState<boolean>();
   const router = useRouter();
-  const PAGE_SIZE = 10;
+  const PAGE_SIZE = 8;
 
   useEffect(() => {
     const fetchUsers = async () => {
-      const allUsers = await fetchAllUsers({ page: pageNumber, per_page: PAGE_SIZE });
+      let queryParams = { page: pageNumber, per_page: PAGE_SIZE };
+      const allUsers = await fetchPageOfUsers(queryParams);
       setPageData(allUsers);
     };
     fetchUsers();
   }, [pageNumber]);
 
   useEffect(() => {
-    if (pageNumber === pageData?.page && pageData?.data?.length === 0) {
+    let isCurrentPageEmpty = pageNumber === pageData?.page && pageData?.data?.length === 0;
+    if (isCurrentPageEmpty) {
       setPageNumber(pageNumber - 1);
     }
   }, [pageNumber, pageData]);
 
   const handleDelete = async (id: number) => {
     const response = await deleteUser(id);
-    if (response.ok) {
+    if (response.statusCode === 422 || response.statusCode === 401) {
+      toast.error(response.data.message);
+    } else {
+      const refetchedPage = await fetchPageOfUsers({ page: pageNumber, per_page: PAGE_SIZE });
+      setPageData(refetchedPage);
       toast("User deleted");
-      let filteredUsers: User[] = pageData?.data?.filter((user) => user?.id !== id);
-      setPageData({ ...pageData, data: filteredUsers });
-      if (filteredUsers.length === 0) {
+      if (refetchedPage.data?.length === 0) {
         setPageNumber(pageNumber - 1);
       }
-    } else {
-      toast.error("User not deleted");
     }
   };
 
   const handleAddUser = async (newUser: User) => {
     if (pageData?.data?.length + 1 > pageData?.per_page) {
-      const refetchedUsers = await fetchAllUsers({ page: pageNumber, per_page: PAGE_SIZE });
+      const refetchedUsers = await fetchPageOfUsers({ page: pageNumber, per_page: PAGE_SIZE });
       setPageData(refetchedUsers);
       setPageNumber(pageNumber + 1);
     } else {

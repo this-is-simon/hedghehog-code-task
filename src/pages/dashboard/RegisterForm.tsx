@@ -43,7 +43,7 @@ const RegisterForm = ({ onClose, appendUser }: Props) => {
       if (response.ok) {
         const newUser = await response.json();
         appendUser(newUser);
-        toast("User added to final page");
+        toast("User added");
         onClose();
       } else {
         toast.error("User not added");

@@ -14,9 +14,16 @@ interface RegisterUserResponse extends Error {
   };
 }
 
+interface DeleteUserResponse extends Error {
+  statusCode?: number;
+  data?: {
+    message?: string;
+  };
+}
+
 interface LoginResponse extends Token, Error {}
 
-export interface AllUsersResponse {
+export interface FetchPageResponse {
   page: number;
   per_page: number;
   total: number;
@@ -57,7 +64,7 @@ interface QueryParams {
   page?: number; // default: 1
 }
 
-export const fetchAllUsers = (queryParams?: QueryParams): Promise<AllUsersResponse> => {
+export const fetchPageOfUsers = (queryParams?: QueryParams): Promise<FetchPageResponse> => {
   let token = localStorage.getItem("token");
   const headers = new Headers({
     Authorization: `Bearer ${token}`,
@@ -100,7 +107,7 @@ export const addNewUser = (newUser: {
     });
 };
 
-export const deleteUser = (id: number): Promise<Response> => {
+export const deleteUser = (id: number): Promise<DeleteUserResponse> => {
   console.log("delete user", id);
   let token = localStorage.getItem("token");
   const headers = new Headers({
@@ -110,7 +117,7 @@ export const deleteUser = (id: number): Promise<Response> => {
     method: "DELETE",
     headers,
   })
-    .then((response) => response)
+    .then((response) => response.json())
     .catch((error) => {
       console.error("Error:", error);
       return error;
