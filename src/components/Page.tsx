@@ -7,8 +7,8 @@ interface Props {
 export const PageLayout = ({ children }: Props) => (
   <PageContainer>
     <Head>
-      <title>Hedghehog Portal</title>
-      <meta name="description" content="A window to the soul" />
+      <title>Dashboard Portal</title>
+      <meta name="description" content="The cause of, and solution to, all of life's problems" />
     </Head>
     <PageContent>{children}</PageContent>
   </PageContainer>

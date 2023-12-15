@@ -1,4 +1,3 @@
-import Head from "next/head";
 import { Body, LargeTitle } from "../components/Typography";
 import { PageLayout } from "../components/Page";
 import { styled } from "styled-components";
