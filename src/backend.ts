@@ -17,7 +17,7 @@ export interface FetchPageResponse {
   data: User[];
 }
 
-export interface CreateUserResponse extends ResponseError {
+export interface CreateUserResponse {
   id: number;
   first_name: string;
   last_name: string;
@@ -25,14 +25,14 @@ export interface CreateUserResponse extends ResponseError {
   display_picture: string;
 }
 
-export const registerUser = (data: UserRegistration): Promise<CreateUserResponse> => {
+export const registerUser = (data: UserRegistration): Promise<Response> => {
   return fetch("http://localhost:3002/api/register", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(data),
-  }).then((response) => response.json());
+  }).then((response) => response);
 };
 
 export const login = (data: UserCredentials): Promise<LoginResponse> => {
@@ -61,7 +61,6 @@ export const fetchUserPage = (
   let rawUrl = `http://localhost:3002/api/users`;
   let url = handleParams(rawUrl, queryParams);
 
-  console.log("url", url);
   return fetch(url, {
     method: "GET",
     headers,

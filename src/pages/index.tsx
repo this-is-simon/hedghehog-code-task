@@ -4,7 +4,7 @@ import { PageLayout } from "../components/Page";
 import { styled } from "styled-components";
 import { Flex } from "../components/Flex";
 import { Button } from "../components/Button";
-import { CreateUserResponse, registerUser } from "../backend";
+import { ResponseError, registerUser } from "../backend";
 import { Panel } from "../components/Panel";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Input } from "../components/Input";
@@ -44,19 +44,22 @@ export default function Home() {
         message: "Must be a valid email address",
       });
     } else {
-      const response: CreateUserResponse = await registerUser({
+      const response = await registerUser({
         first_name: data.firstName,
         last_name: data.lastName,
         email: data.email,
         password: data.password,
         password_confirmation: data.passwordConfirmation,
       });
-      if (response.statusCode === 409) {
-        toast.error("User already exists for the email provided");
-      } else if (response.statusCode === 422) {
-        toast.error("Unable to register. Please check details and try again");
-      } else {
+      if (response.ok) {
         router.push("/login?from=register");
+      } else {
+        let error: ResponseError = await response.json();
+        toast.error(
+          error.statusCode === 422
+            ? "Unable to register. Please check details and try again"
+            : error.data?.message
+        );
       }
     }
   };
