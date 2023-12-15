@@ -20,7 +20,7 @@ interface Props {
   appendUser: (newUser: User) => void;
 }
 
-const RegisterForm = ({ onClose, appendUser }: Props) => {
+const AddUserForm = ({ onClose, appendUser }: Props) => {
   const {
     register,
     handleSubmit,
@@ -108,4 +108,4 @@ const RegisterForm = ({ onClose, appendUser }: Props) => {
   );
 };
 
-export default RegisterForm;
+export default AddUserForm;

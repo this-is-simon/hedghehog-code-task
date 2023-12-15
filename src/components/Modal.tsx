@@ -1,8 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 import { Panel } from "./Panel";
-import { Button } from "./Button";
-import { Flex } from "./Flex";
 import { FaWindowClose } from "react-icons/fa";
 import { Headline } from "./Typography";
 

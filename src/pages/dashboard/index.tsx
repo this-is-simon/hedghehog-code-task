@@ -11,7 +11,7 @@ import Image from "next/image";
 import { FaDoorOpen, FaTrash } from "react-icons/fa";
 import React from "react";
 import Modal from "../../components/Modal";
-import RegisterForm from "./RegisterForm";
+import AddUserForm from "./RegisterForm";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useRouter } from "next/router";
@@ -129,7 +129,7 @@ export default function Dashboard() {
             </StyledPanel>
           ))}
           <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
-            <RegisterForm
+            <AddUserForm
               onClose={() => {
                 setIsOpen(false);
               }}
