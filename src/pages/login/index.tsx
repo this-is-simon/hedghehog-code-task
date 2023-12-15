@@ -3,7 +3,7 @@ import { Panel } from "../../components/Panel";
 import { Content } from "..";
 import { Button } from "../../components/Button";
 import Link from "next/link";
-import { Footnote, Headline, LargeTitle } from "../../components/Typography";
+import { Body, Headline, LargeTitle } from "../../components/Typography";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { login } from "../../backend";
 import { Flex } from "../../components/Flex";
@@ -57,12 +57,7 @@ export default function Login() {
     <PageLayout>
       <Content>
         <LargeTitle role={"h1"}>Login</LargeTitle>
-        <Panel
-          css={`
-            display: flex;
-            flex-direction: column;
-          `}
-        >
+        <StyledPanel>
           {showRegistrationSuccess && (
             <SuccessMessage>Registration successful! Please log in</SuccessMessage>
           )}
@@ -110,12 +105,17 @@ export default function Login() {
               </FooterMessage>
             </Flex>
           </form>
-        </Panel>
+        </StyledPanel>
       </Content>
       <ToastContainer theme={"dark"} />
     </PageLayout>
   );
 }
+
+const StyledPanel = styled(Panel)`
+  display: flex;
+  flex-direction: column;
+`;
 
 const SuccessMessage = styled(Headline)`
   color: var(--button-text-color);
@@ -124,7 +124,7 @@ const SuccessMessage = styled(Headline)`
   align-self: center;
 `;
 
-const FooterMessage = styled(Footnote)`
+const FooterMessage = styled(Body)`
   max-width: 200px;
   margin-bottom: var(--spacing-sm);
 `;

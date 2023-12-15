@@ -1,17 +1,10 @@
 import Head from "next/head";
-import {
-  Body,
-  Footnote,
-  HeaderTitle,
-  Headline,
-  LargeTitle,
-  Title2,
-} from "../components/Typography";
+import { Body, LargeTitle } from "../components/Typography";
 import { PageLayout } from "../components/Page";
-import css, { styled } from "styled-components";
+import { styled } from "styled-components";
 import { Flex } from "../components/Flex";
 import { Button } from "../components/Button";
-import { login, registerUser } from "../backend";
+import { registerUser } from "../backend";
 import { Panel } from "../components/Panel";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Input } from "../components/Input";
@@ -138,9 +131,9 @@ export default function Home() {
                   >
                     Register
                   </Button>
-                  <Footnote>
+                  <Body>
                     Already registered? Please <Link href="/login">log in</Link>
-                  </Footnote>
+                  </Body>
                 </Flex>
               </form>
             </Panel>

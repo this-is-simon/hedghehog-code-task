@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { Flex } from "./Flex";
-import { Footnote } from "./Typography";
+import { Body } from "./Typography";
 import { forwardRef } from "react";
 
 interface Props {
@@ -41,13 +41,13 @@ const StyledInput = styled.input`
   box-sizing: border-box;
 `;
 
-const StyledLabel = styled(Footnote)`
+const StyledLabel = styled(Body)`
   display: flex;
   align-self: flex-start;
   margin-bottom: var(--spacing-xxs);
 `;
 
-const Error = styled(Footnote)`
+const Error = styled(Body)`
   width: 100%;
   text-align: left;
   color: var(--error-color);

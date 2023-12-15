@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { PageLayout } from "../../components/Page";
 import { Panel } from "../../components/Panel";
-import { Footnote, Headline, LargeTitle } from "../../components/Typography";
+import { Body, Headline, LargeTitle } from "../../components/Typography";
 import { FetchPageResponse, deleteUser, fetchPageOfUsers } from "../../backend";
 import { User } from "../../types";
 import { Button } from "../../components/Button";
@@ -75,7 +75,7 @@ export default function Dashboard() {
             <Button disabled={pageData?.page <= 1} onClick={() => setPageNumber(pageNumber - 1)}>
               Previous
             </Button>
-            <Footnote>Page {pageData?.page}</Footnote>
+            <Body>Page {pageData?.page}</Body>
             <Button
               disabled={pageNumber >= pageData?.total_pages}
               onClick={() => setPageNumber(pageNumber + 1)}
@@ -101,8 +101,8 @@ export default function Dashboard() {
               {user.first_name} {user.last_name}
             </Headline>
 
-            <Footnote>{user.email}</Footnote>
-            <Footnote>ID: {user.id}</Footnote>
+            <Body>{user.email}</Body>
+            <Body>ID: {user.id}</Body>
             <IconContainer onClick={() => handleDelete(user.id)}>
               <FaTrash size={20} />
             </IconContainer>
