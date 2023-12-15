@@ -21,7 +21,7 @@ export default function Dashboard() {
   const [pageNumber, setPageNumber] = useState<number>(1);
   const [isOpen, setIsOpen] = useState<boolean>();
   const router = useRouter();
-  const PAGE_SIZE = 8;
+  const PAGE_SIZE = 10;
 
   useEffect(() => {
     const fetchUsers = async () => {

@@ -3,7 +3,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { Flex } from "../../components/Flex";
 import { Input } from "../../components/Input";
 import { Button } from "../../components/Button";
-import { addNewUser } from "../../backend";
+import { ResponseError, addNewUser } from "../../backend";
 import { User } from "../../types";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -46,6 +46,11 @@ const RegisterForm = ({ onClose, appendUser }: Props) => {
         toast("User added");
         onClose();
       } else {
+        let error: ResponseError = await response.json();
+        setError("email", {
+          type: "manual",
+          message: error.data?.message,
+        });
         toast.error("User not added");
       }
     }

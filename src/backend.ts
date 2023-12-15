@@ -1,27 +1,27 @@
 import { UserCredentials, UserRegistration, Token, User } from "./types";
 
-interface Error {
+export interface ResponseError {
   statusCode?: number;
   data?: {
     message?: string;
   };
 }
 
-interface RegisterUserResponse extends Error {
+interface RegisterUserResponse extends ResponseError {
   statusCode?: number;
   data?: {
     message?: string;
   };
 }
 
-interface DeleteUserResponse extends Error {
+interface DeleteUserResponse extends ResponseError {
   statusCode?: number;
   data?: {
     message?: string;
   };
 }
 
-interface LoginResponse extends Token, Error {}
+interface LoginResponse extends Token, ResponseError {}
 
 export interface FetchPageResponse {
   page: number;
