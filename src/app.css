@@ -1,11 +1,8 @@
 :root {
-  --foreground-rgb: 255, 255, 255;
-  --background-start-rgb: 0, 0, 0;
-  --background-end-rgb: 0, 0, 0;
-  --white-light:226, 232, 240; /* #ffffff */
-  --white-dark: 148, 163, 184; /* #ffffff */
-  --cyan-mid: 0, 232, 255; /* #00e8ff */
-  --magenta-mid: 255, 0, 117; /* #ff0075 */
+  --white-light:226, 232, 240;
+  --white-dark: 148, 163, 184; 
+  --cyan-mid: 0, 232, 255; 
+  --magenta-mid: 255, 0, 117;
   --black-dark: 1, 1, 1;
   --blue-dark: 15, 23, 42;
   --green-transparent: 45, 212, 191, 0.2;
@@ -14,12 +11,11 @@
   --text-color: rgb(var(--white-dark));
   --highlight-text-color: rgb(var(--white-light));
   --secondary-text-color: rgb(var(--white-mid));
-  --unvisited-link-color: rgb(var(--cyan-mid));
   --focus-link-color: rgb(var(--cyan-mid));
   --panel-bg-color: rgba(var(--white-light), 0.05);
+  --modal-bg-color: rgb(var(--black-dark));
   --button-color: rgba(var(--green-transparent));
   --button-text-color: rgba(var(--green));
-  --button-bg-default: rgb(var(--white-light));
   --error-color: rgb(var(--magenta-mid));
 
 
@@ -32,7 +28,6 @@
   --spacing-lg: calc(2 * var(--spacing-unit)); /* 32px */
   --spacing-xl: calc(3.25 * var(--spacing-unit)); /* 52px */
   --spacing-xxl: calc(5.25 * var(--spacing-unit)); /* 84px */
-  --spacing-xxxl: calc(6.25 * var(--spacing-unit)); /* 100px */
 }
 
 body {
