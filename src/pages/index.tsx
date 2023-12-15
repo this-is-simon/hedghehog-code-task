@@ -4,7 +4,7 @@ import { PageLayout } from "../components/Page";
 import { styled } from "styled-components";
 import { Flex } from "../components/Flex";
 import { Button } from "../components/Button";
-import { registerUser } from "../backend";
+import { CreateUserResponse, registerUser } from "../backend";
 import { Panel } from "../components/Panel";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Input } from "../components/Input";
@@ -44,7 +44,7 @@ export default function Home() {
         message: "Must be a valid email address",
       });
     } else {
-      const response = await registerUser({
+      const response: CreateUserResponse = await registerUser({
         first_name: data.firstName,
         last_name: data.lastName,
         email: data.email,

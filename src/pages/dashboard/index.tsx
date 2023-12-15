@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { PageLayout } from "../../components/Page";
 import { Panel } from "../../components/Panel";
 import { Body, Headline, LargeTitle } from "../../components/Typography";
-import { FetchPageResponse, deleteUser, fetchPageOfUsers } from "../../backend";
+import { FetchPageResponse, deleteUser, fetchUserPage } from "../../backend";
 import { User } from "../../types";
 import { Button } from "../../components/Button";
 import { Flex } from "../../components/Flex";
@@ -20,17 +20,31 @@ export default function Dashboard() {
   const [pageData, setPageData] = useState<FetchPageResponse>();
   const [pageNumber, setPageNumber] = useState<number>(1);
   const [isOpen, setIsOpen] = useState<boolean>();
+  const [token, setToken] = useState<string>();
   const router = useRouter();
   const PAGE_SIZE = 10;
 
   useEffect(() => {
-    const fetchUsers = async () => {
-      let queryParams = { page: pageNumber, per_page: PAGE_SIZE };
-      const allUsers = await fetchPageOfUsers(queryParams);
-      setPageData(allUsers);
-    };
-    fetchUsers();
-  }, [pageNumber]);
+    if (window !== undefined) {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        router.push("/login");
+      } else {
+        setToken(token);
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    if (token) {
+      const fetchUsers = async () => {
+        let queryParams = { page: pageNumber, per_page: PAGE_SIZE };
+        const allUsers = await fetchUserPage(token, queryParams);
+        setPageData(allUsers);
+      };
+      fetchUsers();
+    }
+  }, [pageNumber, token]);
 
   useEffect(() => {
     let isCurrentPageEmpty = pageNumber === pageData?.page && pageData?.data?.length === 0;
@@ -44,7 +58,7 @@ export default function Dashboard() {
     if (response.statusCode === 422 || response.statusCode === 401) {
       toast.error(response.data.message);
     } else {
-      const refetchedPage = await fetchPageOfUsers({ page: pageNumber, per_page: PAGE_SIZE });
+      const refetchedPage = await fetchUserPage(token, { page: pageNumber, per_page: PAGE_SIZE });
       setPageData(refetchedPage);
       toast("User deleted");
       if (refetchedPage.data?.length === 0) {
@@ -55,7 +69,7 @@ export default function Dashboard() {
 
   const handleAddUser = async (newUser: User) => {
     if (pageData?.data?.length + 1 > pageData?.per_page) {
-      const refetchedUsers = await fetchPageOfUsers({ page: pageNumber, per_page: PAGE_SIZE });
+      const refetchedUsers = await fetchUserPage(token, { page: pageNumber, per_page: PAGE_SIZE });
       setPageData(refetchedUsers);
       setPageNumber(pageNumber + 1);
     } else {
@@ -65,75 +79,82 @@ export default function Dashboard() {
 
   return (
     <PageLayout>
-      <Heading gap={"var(--spacing-md)"} justify={"space-between"}>
-        <Flex gap={"var(--spacing-md)"}>
-          <LargeTitle role={"h1"}>Dashboard</LargeTitle>
-        </Flex>
-        <PageButtons>
-          <Button onClick={() => setIsOpen(true)}>Add User</Button>
-          <Flex gap={"var(--spacing-md)"}>
-            <Button disabled={pageData?.page <= 1} onClick={() => setPageNumber(pageNumber - 1)}>
-              Previous
-            </Button>
-            <Body>Page {pageData?.page}</Body>
-            <Button
-              disabled={pageNumber >= pageData?.total_pages}
-              onClick={() => setPageNumber(pageNumber + 1)}
-            >
-              Next
-            </Button>
-          </Flex>
-        </PageButtons>
-      </Heading>
-      {pageData?.data?.map((user) => (
-        <StyledPanel>
-          <ImageContainer>
-            <Image
-              fill
-              priority
-              objectFit="contain"
-              src={user.display_picture}
-              alt="User display picture"
-            />
-          </ImageContainer>
-          <UserDetails>
-            <Headline>
-              {user.first_name} {user.last_name}
-            </Headline>
+      {token && (
+        <>
+          <Heading gap={"var(--spacing-md)"} justify={"space-between"}>
+            <Flex gap={"var(--spacing-md)"}>
+              <LargeTitle role={"h1"}>Dashboard</LargeTitle>
+            </Flex>
+            <PageButtons>
+              <Button onClick={() => setIsOpen(true)}>Add User</Button>
+              <Flex gap={"var(--spacing-md)"}>
+                <Button
+                  disabled={pageData?.page <= 1}
+                  onClick={() => setPageNumber(pageNumber - 1)}
+                >
+                  Previous
+                </Button>
+                <Body>Page {pageData?.page}</Body>
+                <Button
+                  disabled={pageNumber >= pageData?.total_pages}
+                  onClick={() => setPageNumber(pageNumber + 1)}
+                >
+                  Next
+                </Button>
+              </Flex>
+            </PageButtons>
+          </Heading>
+          {pageData?.data?.map((user) => (
+            <StyledPanel>
+              <ImageContainer>
+                <Image
+                  fill
+                  priority
+                  objectFit="contain"
+                  src={user.display_picture}
+                  alt="User display picture"
+                />
+              </ImageContainer>
+              <UserDetails>
+                <Headline>
+                  {user.first_name} {user.last_name}
+                </Headline>
 
-            <Body>{user.email}</Body>
-            <Body>ID: {user.id}</Body>
-            <IconContainer onClick={() => handleDelete(user.id)}>
-              <FaTrash size={20} />
-            </IconContainer>
-          </UserDetails>
-        </StyledPanel>
-      ))}
-      <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
-        <RegisterForm
-          onClose={() => {
-            setIsOpen(false);
-          }}
-          appendUser={handleAddUser}
-        />
-      </Modal>
-      <LogoutContainer>
-        <Button
-          onClick={() => {
-            localStorage.removeItem("token");
-            router.push("/login?from=logout");
-          }}
-          css={`
-            display: flex;
-            gap: var(--spacing-md);
-            margin-top: var(--spacing-lg);
-          `}
-        >
-          <Headline>Log out</Headline>
-          <FaDoorOpen size={20} />
-        </Button>
-      </LogoutContainer>
-      <ToastContainer theme={"dark"} />
+                <Body>{user.email}</Body>
+                <Body>ID: {user.id}</Body>
+                <IconContainer onClick={() => handleDelete(user.id)}>
+                  <FaTrash size={20} />
+                </IconContainer>
+              </UserDetails>
+            </StyledPanel>
+          ))}
+          <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
+            <RegisterForm
+              onClose={() => {
+                setIsOpen(false);
+              }}
+              appendUser={handleAddUser}
+            />
+          </Modal>
+          <LogoutContainer>
+            <Button
+              onClick={() => {
+                localStorage.removeItem("token");
+                router.push("/login?from=logout");
+              }}
+              css={`
+                display: flex;
+                gap: var(--spacing-md);
+                margin-top: var(--spacing-lg);
+              `}
+            >
+              <Headline>Log out</Headline>
+              <FaDoorOpen size={20} />
+            </Button>
+          </LogoutContainer>
+          <ToastContainer theme={"dark"} />
+        </>
+      )}
     </PageLayout>
   );
 }

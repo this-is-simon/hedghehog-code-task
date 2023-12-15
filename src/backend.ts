@@ -6,21 +6,7 @@ export interface ResponseError {
     message?: string;
   };
 }
-
-interface RegisterUserResponse extends ResponseError {
-  statusCode?: number;
-  data?: {
-    message?: string;
-  };
-}
-
-interface DeleteUserResponse extends ResponseError {
-  statusCode?: number;
-  data?: {
-    message?: string;
-  };
-}
-
+interface DeleteUserResponse extends ResponseError {}
 interface LoginResponse extends Token, ResponseError {}
 
 export interface FetchPageResponse {
@@ -31,7 +17,7 @@ export interface FetchPageResponse {
   data: User[];
 }
 
-export interface CreateUserResponse {
+export interface CreateUserResponse extends ResponseError {
   id: number;
   first_name: string;
   last_name: string;
@@ -39,7 +25,7 @@ export interface CreateUserResponse {
   display_picture: string;
 }
 
-export const registerUser = (data: UserRegistration): Promise<RegisterUserResponse> => {
+export const registerUser = (data: UserRegistration): Promise<CreateUserResponse> => {
   return fetch("http://localhost:3002/api/register", {
     method: "POST",
     headers: {
@@ -64,8 +50,10 @@ interface QueryParams {
   page?: number; // default: 1
 }
 
-export const fetchPageOfUsers = (queryParams?: QueryParams): Promise<FetchPageResponse> => {
-  let token = localStorage.getItem("token");
+export const fetchUserPage = (
+  token: string,
+  queryParams?: QueryParams
+): Promise<FetchPageResponse> => {
   const headers = new Headers({
     Authorization: `Bearer ${token}`,
     "Content-Type": "application/json",
