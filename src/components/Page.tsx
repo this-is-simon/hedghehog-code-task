@@ -1,3 +1,4 @@
+import Head from "next/head";
 import styled from "styled-components";
 
 interface Props {
@@ -5,6 +6,10 @@ interface Props {
 }
 export const PageLayout = ({ children }: Props) => (
   <PageContainer>
+    <Head>
+      <title>Hedghehog Portal</title>
+      <meta name="description" content="A window to the soul" />
+    </Head>
     <PageContent>{children}</PageContent>
   </PageContainer>
 );

@@ -6,7 +6,7 @@ export interface ResponseError {
     message?: string;
   };
 }
-interface DeleteUserResponse extends ResponseError {}
+export interface DeleteUserResponse extends ResponseError {}
 export interface LoginResponse extends Token, ResponseError {}
 
 export interface FetchPageResponse {
@@ -15,14 +15,6 @@ export interface FetchPageResponse {
   total: number;
   total_pages: number;
   data: User[];
-}
-
-export interface CreateUserResponse {
-  id: number;
-  first_name: string;
-  last_name: string;
-  email: string;
-  display_picture: string;
 }
 
 export const registerUser = (data: UserRegistration): Promise<Response> => {

@@ -4,6 +4,7 @@ import { Panel } from "./Panel";
 import { Button } from "./Button";
 import { Flex } from "./Flex";
 import { FaWindowClose } from "react-icons/fa";
+import { Headline } from "./Typography";
 
 interface ModalProps {
   isOpen: boolean;
@@ -18,7 +19,14 @@ const AddUserModal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
   return (
     <ModalWrapper>
       <ModalContent>
-        <h2>Add User</h2>
+        <Headline
+          css={`
+            margin-bottom: var(--spacing-md);
+          `}
+          role={"h2"}
+        >
+          Add User
+        </Headline>
         {children}
         <IconContainer onClick={onClose}>
           <FaWindowClose size={20} />

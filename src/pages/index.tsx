@@ -66,10 +66,6 @@ export default function Home() {
 
   return (
     <>
-      <Head>
-        <title>Hedghehog Portal</title>
-        <meta name="description" content="A window to the soul" />
-      </Head>
       <main>
         <PageLayout>
           <Content>

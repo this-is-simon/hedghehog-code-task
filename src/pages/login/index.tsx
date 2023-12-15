@@ -5,14 +5,13 @@ import { Button } from "../../components/Button";
 import Link from "next/link";
 import { Body, Headline, LargeTitle } from "../../components/Typography";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { LoginResponse, ResponseError, login } from "../../backend";
+import { LoginResponse, login } from "../../backend";
 import { Flex } from "../../components/Flex";
 import { Input } from "../../components/Input";
 import { useRouter } from "next/router";
 import { validateEmail } from "../../utils";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useEffect } from "react";
 import styled from "styled-components";
 
 type Inputs = {
