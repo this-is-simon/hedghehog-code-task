@@ -5,7 +5,7 @@ import { Button } from "../../components/Button";
 import Link from "next/link";
 import { Body, Headline, LargeTitle } from "../../components/Typography";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { login } from "../../backend";
+import { LoginResponse, ResponseError, login } from "../../backend";
 import { Flex } from "../../components/Flex";
 import { Input } from "../../components/Input";
 import { useRouter } from "next/router";
@@ -44,11 +44,12 @@ export default function Login() {
         email: data.email,
         password: data.password,
       });
-      if (response.statusCode === 422) {
-        toast.error(response.data?.message);
-      } else {
-        localStorage.setItem("token", response.token);
+      let body: LoginResponse = await response.json();
+      if (response.ok) {
+        localStorage.setItem("token", body.token);
         router.push("/dashboard");
+      } else {
+        toast.error(body.data?.message);
       }
     }
   };

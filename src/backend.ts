@@ -7,7 +7,7 @@ export interface ResponseError {
   };
 }
 interface DeleteUserResponse extends ResponseError {}
-interface LoginResponse extends Token, ResponseError {}
+export interface LoginResponse extends Token, ResponseError {}
 
 export interface FetchPageResponse {
   page: number;
@@ -35,14 +35,14 @@ export const registerUser = (data: UserRegistration): Promise<Response> => {
   }).then((response) => response);
 };
 
-export const login = (data: UserCredentials): Promise<LoginResponse> => {
+export const login = (data: UserCredentials): Promise<Response> => {
   return fetch("http://localhost:3002/api/login", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(data),
-  }).then((response) => response.json());
+  }).then((response) => response);
 };
 
 interface QueryParams {
