@@ -11,7 +11,7 @@ import Image from "next/image";
 import { FaDoorOpen, FaTrash } from "react-icons/fa";
 import React from "react";
 import Modal from "../../components/Modal";
-import AddUserForm from "./RegisterForm";
+import AddUserForm from "./AddUserForm";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useRouter } from "next/router";
